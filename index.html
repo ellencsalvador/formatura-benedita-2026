@@ -46,10 +46,6 @@
       background-image: radial-gradient(circle at 15% 20%, rgba(212, 163, 56, 0.16) 0%, transparent 45%),
                         radial-gradient(circle at 85% 80%, rgba(30, 75, 143, 0.45) 0%, transparent 50%);
     }
-    .glass-card {
-      background: rgba(255, 255, 255, 0.96);
-      backdrop-filter: blur(8px);
-    }
   </style>
 </head>
 <body class="antialiased selection:bg-gold-500 selection:text-white">
@@ -59,10 +55,10 @@
     <div class="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-2 text-sm font-semibold">
       <div class="flex items-center gap-2">
         <span class="inline-flex h-2.5 w-2.5 rounded-full bg-navy-900 animate-pulse"></span>
-        <span>MODO ADMINISTRADORA ATIVO — Alterações salvas aqui atualizam o portal público.</span>
+        <span>MODO ADMINISTRADORA ATIVO — Todas as alterações são salvas na nuvem em tempo real.</span>
       </div>
       <div class="flex items-center gap-2">
-        <span id="syncStatusBadge" class="text-xs bg-white/80 text-navy-900 px-2.5 py-1 rounded-full font-medium">Conectando...</span>
+        <span id="syncStatusBadge" class="text-xs bg-white/85 text-navy-900 px-2.5 py-1 rounded-full font-medium">Sincronizado</span>
         <button onclick="logoutAdmin()" class="bg-navy-900 text-white hover:bg-navy-800 px-3 py-1 rounded-lg text-xs font-semibold transition">
           Sair do Modo Admin
         </button>
@@ -74,7 +70,6 @@
   <header class="bg-white/95 backdrop-blur border-b border-slate-200/80 sticky top-0 z-40" id="mainHeader">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-3">
       <div class="flex items-center gap-3 min-w-0">
-        <!-- Brasão / Ícone Capelo -->
         <div class="w-10 h-10 rounded-xl bg-navy-900 flex items-center justify-center text-gold-500 shrink-0 shadow-sm">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5z" />
@@ -87,7 +82,6 @@
         </div>
       </div>
 
-      <!-- Links rápidos Desktop -->
       <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-600">
         <a href="#cerimonia" class="hover:text-navy-900 transition">Cerimônia & Trajes</a>
         <a href="#financeiro" class="hover:text-navy-900 transition">Prestação de Contas</a>
@@ -95,13 +89,18 @@
         <a href="#formandos" class="hover:text-navy-900 transition">54 Formandos</a>
       </nav>
 
-      <!-- Botão Acesso Comissão -->
-      <button id="adminLoginBtn" onclick="openAdminModal()" class="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-navy-900 bg-slate-100 hover:bg-slate-200/80 border border-slate-200 px-3 py-2 rounded-xl transition shrink-0">
-        <svg class="w-4 h-4 text-gold-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-        </svg>
-        <span id="adminBtnLabel">Área Restrita</span>
-      </button>
+      <div class="flex items-center gap-2 shrink-0">
+        <div id="publicCloudBadge" class="hidden sm:inline-flex items-center gap-1.5 text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200 px-3 py-1.5 rounded-full">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          <span>Sincronizado • Tempo real</span>
+        </div>
+        <button id="adminLoginBtn" onclick="openAdminModal()" class="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-navy-900 bg-slate-100 hover:bg-slate-200/80 border border-slate-200 px-3 py-2 rounded-xl transition">
+          <svg class="w-4 h-4 text-gold-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+          </svg>
+          <span id="adminBtnLabel">Área Restrita</span>
+        </button>
+      </div>
     </div>
   </header>
 
@@ -122,7 +121,6 @@
         E.M. Benedita Salinas dos Santos • Barra Velha, Ilhabela/SP
       </p>
 
-      <!-- Barra de Navegação Mobile Rápida -->
       <div class="mt-7 flex flex-wrap gap-2.5">
         <a href="#cerimonia" class="bg-gold-500 hover:bg-gold-600 text-navy-900 font-bold text-xs sm:text-sm px-4 py-2.5 rounded-xl transition shadow-sm">
           📅 Lembretes da Cerimônia
@@ -156,7 +154,6 @@
       </div>
 
       <div class="p-6 sm:p-8 grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
-        <!-- Data, Horário e Local -->
         <div class="lg:col-span-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div class="bg-slate-50 border border-slate-200/80 rounded-2xl p-4 flex items-start gap-3.5">
             <div class="w-10 h-10 rounded-xl bg-navy-900/10 text-navy-900 flex items-center justify-center shrink-0">
@@ -199,9 +196,7 @@
           </div>
         </div>
 
-        <!-- Trajes Oficiais -->
         <div class="lg:col-span-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <!-- Meninas -->
           <div class="bg-pastelPink-100 border border-pink-200 rounded-2xl p-5 flex flex-col justify-between">
             <div>
               <div class="flex items-center justify-between gap-2 mb-3">
@@ -221,7 +216,6 @@
             </div>
           </div>
 
-          <!-- Meninos -->
           <div class="bg-amber-50/70 border border-amber-200/90 rounded-2xl p-5 flex flex-col justify-between">
             <div>
               <div class="flex items-center justify-between gap-2 mb-3">
@@ -247,114 +241,148 @@
       </div>
     </section>
 
-    <!-- PAINEL CONFIDENCIAL DA COMISSÃO (APARECE APENAS NO MODO ADMIN) -->
-    <section id="secretCommissionPanel" class="hidden bg-amber-50 border-2 border-amber-400 rounded-3xl p-6 sm:p-8 shadow-md">
+    <!-- PAINEL CONFIDENCIAL & GESTÃO FLEXÍVEL DA ADMINISTRADORA (APARECE APENAS NO MODO ADMIN) -->
+    <section id="secretCommissionPanel" class="hidden bg-amber-50 border-2 border-amber-400 rounded-3xl p-6 sm:p-8 shadow-md space-y-6">
       <div class="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-amber-200">
         <div class="flex items-center gap-3">
           <div class="w-10 h-10 rounded-xl bg-amber-500 text-navy-900 flex items-center justify-center font-bold">
             🔒
           </div>
           <div>
-            <h2 class="font-display font-bold text-navy-900 text-lg sm:text-xl">Painel Confidencial & Gestão da Administradora</h2>
-            <p class="text-xs sm:text-sm text-amber-900">Visível exclusivamente após login com senha. O público não vê este bloco.</p>
+            <h2 class="font-display font-bold text-navy-900 text-lg sm:text-xl">Painel de Gestão Flexível da Administradora</h2>
+            <p class="text-xs sm:text-sm text-amber-900">Edite entradas individualizadas, datas de produção, status de compras e prazos de entrega.</p>
           </div>
         </div>
-        <button onclick="openPasswordChangeModal()" class="text-xs font-semibold bg-white hover:bg-amber-100 text-navy-900 border border-amber-300 px-3 py-2 rounded-xl transition">
-          Alterar Senha Admin
-        </button>
+        <div class="flex items-center gap-2">
+          <button onclick="openPasswordChangeModal()" class="text-xs font-semibold bg-white hover:bg-amber-100 text-navy-900 border border-amber-300 px-3 py-2 rounded-xl transition">
+            Alterar Senha Admin
+          </button>
+          <button onclick="resetDefaultData()" class="text-xs font-semibold bg-white hover:bg-red-50 text-red-700 border border-red-200 px-3 py-2 rounded-xl transition">
+            Restaurar Base Oficial
+          </button>
+        </div>
       </div>
 
       <!-- Registro Confidencial do Ônibus -->
-      <div class="mt-5 bg-white border border-amber-300 rounded-2xl p-5 shadow-xs">
-        <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-amber-800 mb-1.5">
+      <div class="bg-white border border-amber-300 rounded-2xl p-4 sm:p-5 shadow-xs">
+        <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-amber-800 mb-1">
           <span>🚌 Registro Confidencial de Transporte (Sigilo Mantido no Painel Público)</span>
         </div>
-        <p class="text-sm sm:text-base font-semibold text-navy-900">
+        <p class="text-sm font-semibold text-navy-900">
           Transporte Oficial (Ônibus): <span class="text-navy-700 underline decoration-gold-500">Rafael Turismo Ilhabela</span> — Garantido por doação integral do Secretário de Segurança <span class="text-navy-700 font-bold">Lucas Oliveira</span>.
-        </p>
-        <p class="text-xs text-slate-500 mt-1">
-          * No painel público consta apenas: "Garantido por Parceria/Doação (Custo R$ 0,00 para o caixa)", preservando o sigilo até a divulgação próxima à formatura.
         </p>
       </div>
 
-      <!-- Controles de Edição Rápida em Tempo Real -->
-      <div class="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <!-- Atualizar Entradas de Caixa -->
-        <div class="bg-white border border-slate-200 rounded-2xl p-5 space-y-4">
-          <h3 class="font-display font-bold text-navy-900 text-base flex items-center gap-2">
-            <span>💵 Atualizar Valores Já Recebidos em Caixa</span>
-          </h3>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
-            <div>
-              <label class="block text-xs font-semibold text-slate-600 mb-1">Fase 2A (R$)</label>
-              <input type="number" step="0.01" id="editFase2A" class="w-full border border-slate-300 rounded-xl px-3 py-2 font-semibold text-navy-900 focus:ring-2 focus:ring-navy-700 outline-none">
-            </div>
-            <div>
-              <label class="block text-xs font-semibold text-slate-600 mb-1">Fase 2B — Ana (R$)</label>
-              <input type="number" step="0.01" id="editFase2B" class="w-full border border-slate-300 rounded-xl px-3 py-2 font-semibold text-navy-900 focus:ring-2 focus:ring-navy-700 outline-none">
-            </div>
-            <div>
-              <label class="block text-xs font-semibold text-slate-600 mb-1">Fase 2B — Pendentes (Qtd)</label>
-              <input type="number" step="1" id="editPendentes2B" class="w-full border border-slate-300 rounded-xl px-3 py-2 font-semibold text-navy-900 focus:ring-2 focus:ring-navy-700 outline-none">
-            </div>
-            <div>
-              <label class="block text-xs font-semibold text-slate-600 mb-1">Fase 2C — Pamela (R$)</label>
-              <input type="number" step="0.01" id="editFase2C" class="w-full border border-slate-300 rounded-xl px-3 py-2 font-semibold text-navy-900 focus:ring-2 focus:ring-navy-700 outline-none">
-            </div>
-            <div>
-              <label class="block text-xs font-semibold text-slate-600 mb-1">Fase 2C — A Receber (R$)</label>
-              <input type="number" step="0.01" id="editPendente2C" class="w-full border border-slate-300 rounded-xl px-3 py-2 font-semibold text-navy-900 focus:ring-2 focus:ring-navy-700 outline-none">
-            </div>
-            <div>
-              <label class="block text-xs font-semibold text-slate-600 mb-1">Doações Escola Geral (R$)</label>
-              <input type="number" step="0.01" id="editDoacoes" class="w-full border border-slate-300 rounded-xl px-3 py-2 font-semibold text-navy-900 focus:ring-2 focus:ring-navy-700 outline-none">
-            </div>
-            <div>
-              <label class="block text-xs font-semibold text-slate-600 mb-1">Última Doação — A Receber (R$)</label>
-              <input type="number" step="0.01" id="editUltimaDoacao" class="w-full border border-slate-300 rounded-xl px-3 py-2 font-semibold text-navy-900 focus:ring-2 focus:ring-navy-700 outline-none">
-            </div>
-          </div>
-
-          <!-- Botões de Lançamento Rápido -->
-          <div class="pt-1 border-t border-slate-100">
-            <p class="text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-2">⚡ Lançamentos Rápidos (1 Clique):</p>
-            <div class="flex flex-wrap gap-2">
-              <button type="button" id="btnQuick2C" onclick="quickConfirm2C()" class="text-xs font-semibold bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 px-3 py-1.5 rounded-xl transition disabled:opacity-40">
-                + R$ 50,00 (Pendente Fase 2C)
-              </button>
-              <button type="button" id="btnQuickDonation" onclick="quickConfirmLastDonation()" class="text-xs font-semibold bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 px-3 py-1.5 rounded-xl transition disabled:opacity-40">
-                + R$ 100,00 (Última Doação Escola)
-              </button>
-              <button type="button" id="btnQuick2BChild1" onclick="quickConfirm2BChildren(1)" class="text-xs font-semibold bg-blue-50 hover:bg-blue-100 text-navy-900 border border-blue-200 px-3 py-1.5 rounded-xl transition disabled:opacity-40">
-                + R$ 146,00 (1 Criança Fase 2B)
-              </button>
-              <button type="button" id="btnQuick2BChild2" onclick="quickConfirm2BChildren(2)" class="text-xs font-semibold bg-blue-50 hover:bg-blue-100 text-navy-900 border border-blue-200 px-3 py-1.5 rounded-xl transition disabled:opacity-40">
-                + R$ 292,00 (2 Crianças Fase 2B)
-              </button>
-              <button type="button" id="btnQuick2BChild3" onclick="quickConfirm2BChildren(3)" class="text-xs font-semibold bg-blue-50 hover:bg-blue-100 text-navy-900 border border-blue-200 px-3 py-1.5 rounded-xl transition disabled:opacity-40">
-                + R$ 438,00 (3 Crianças Fase 2B)
-              </button>
-            </div>
-          </div>
-
-          <div class="flex flex-wrap items-center gap-2 pt-2">
-            <button onclick="saveAdminFinancials()" class="bg-navy-900 hover:bg-navy-800 text-white font-semibold text-xs sm:text-sm px-4 py-2.5 rounded-xl transition shadow-sm">
-              Salvar & Publicar no Portal
-            </button>
-            <button onclick="resetDefaultData()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium text-xs px-3 py-2.5 rounded-xl transition">
-              Restaurar Valores Originais
-            </button>
+      <!-- 1. ENTRADAS DE CAIXA FLEXÍVEIS E INDIVIDUALIZADAS -->
+      <div class="bg-white border border-slate-200 rounded-2xl p-5 sm:p-6 space-y-5">
+        <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-3">
+          <div>
+            <h3 class="font-display font-bold text-navy-900 text-base sm:text-lg">💵 1. Entradas de Caixa & Recebimentos Individualizados</h3>
+            <p class="text-xs text-slate-500">Edite qualquer valor diretamente ou lance um novo pagamento avulso/individualizado.</p>
           </div>
         </div>
 
-        <!-- Checklist de Pagamentos aos Fornecedores -->
-        <div class="bg-white border border-slate-200 rounded-2xl p-5 space-y-3">
-          <h3 class="font-display font-bold text-navy-900 text-base flex items-center gap-2">
-            <span>✅ Controle de Pagamentos aos Fornecedores</span>
-          </h3>
-          <p class="text-xs text-slate-500">Marque conforme for quitando para exibir o selo "Pago" na tabela pública:</p>
-          <div id="supplierChecklist" class="space-y-2 text-sm">
-            <!-- Preenchido via JS -->
+        <!-- Campos editáveis de cada origem -->
+        <div id="adminCashSourcesList" class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <!-- Renderizado via JS -->
+        </div>
+
+        <!-- Formulário para lançar nova entrada individualizada -->
+        <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-3">
+          <p class="text-xs font-bold uppercase tracking-wider text-navy-900">+ Lançar Novo Recebimento Individualizado (Ex.: Pagamento de Aluno, Rifa, Doação)</p>
+          <div class="grid grid-cols-1 sm:grid-cols-12 gap-3 text-sm">
+            <div class="sm:col-span-4">
+              <label class="block text-xs font-semibold text-slate-600 mb-1">Origem / Nome do Pagador</label>
+              <input type="text" id="newCashOrigin" placeholder="Ex.: Pagamento Aluno João (2B)" class="w-full border border-slate-300 rounded-xl px-3 py-2 bg-white text-navy-900 outline-none focus:ring-2 focus:ring-navy-700">
+            </div>
+            <div class="sm:col-span-3">
+              <label class="block text-xs font-semibold text-slate-600 mb-1">Valor Entrando (R$)</label>
+              <input type="number" step="0.01" min="0.01" id="newCashAmount" placeholder="0,00" class="w-full border border-slate-300 rounded-xl px-3 py-2 bg-white font-bold text-emerald-700 outline-none focus:ring-2 focus:ring-navy-700">
+            </div>
+            <div class="sm:col-span-3">
+              <label class="block text-xs font-semibold text-slate-600 mb-1">Data / Observação</label>
+              <input type="text" id="newCashNote" placeholder="Ex.: PIX recebido em 15/11" class="w-full border border-slate-300 rounded-xl px-3 py-2 bg-white text-navy-900 outline-none focus:ring-2 focus:ring-navy-700">
+            </div>
+            <div class="sm:col-span-2 flex items-end">
+              <button type="button" onclick="addIndividualCashEntry()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs py-2.5 px-3 rounded-xl transition shadow-xs">
+                + Lançar
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Ajuste de Pendências Mapeadas (para cálculo transparente do saldo restante) -->
+        <div class="bg-amber-50/70 border border-amber-200 rounded-2xl p-4">
+          <p class="text-xs font-bold uppercase tracking-wider text-amber-900 mb-2">⏳ Ajuste das Pendências Ainda a Receber (Não somadas ao caixa atual)</p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">Qtd. Crianças Pendentes na Fase 2B (× R$ 146,00)</label>
+              <input type="number" step="1" min="0" id="editPendentes2B" class="w-full border border-slate-300 rounded-xl px-3 py-2 bg-white font-semibold text-navy-900">
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">Valor Pendente a Receber na Fase 2C (R$)</label>
+              <input type="number" step="0.01" min="0" id="editPendente2C" class="w-full border border-slate-300 rounded-xl px-3 py-2 bg-white font-semibold text-navy-900">
+            </div>
+          </div>
+        </div>
+
+        <div class="flex justify-end">
+          <button type="button" onclick="saveAllCashChanges()" class="bg-navy-900 hover:bg-navy-800 text-white font-bold text-xs sm:text-sm px-5 py-2.5 rounded-xl transition shadow-sm">
+            💾 Salvar Alterações de Caixa e Pendências
+          </button>
+        </div>
+      </div>
+
+      <!-- 2. GESTÃO EDITÁVEL DE COMPRAS, PRODUÇÃO, STATUS E PRAZOS DE ENTREGA -->
+      <div class="bg-white border border-slate-200 rounded-2xl p-5 sm:p-6 space-y-5">
+        <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-3">
+          <div>
+            <h3 class="font-display font-bold text-navy-900 text-base sm:text-lg">📦 2. Itens do Orçamento, Status Real, Data de Produção e Prazo de Entrega</h3>
+            <p class="text-xs text-slate-500">Altere o status (ex.: Orçado, Em Produção, Comprado, Pago), informe datas e observações de entrega de cada item.</p>
+          </div>
+          <button type="button" onclick="saveAllSuppliers()" class="bg-navy-900 hover:bg-navy-800 text-white font-bold text-xs sm:text-sm px-4 py-2 rounded-xl transition shadow-xs">
+            💾 Salvar Todos os Itens
+          </button>
+        </div>
+
+        <div id="adminSuppliersEditor" class="space-y-4">
+          <!-- Renderizado via JS -->
+        </div>
+
+        <!-- Adicionar novo item ao orçamento -->
+        <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-3">
+          <p class="text-xs font-bold uppercase tracking-wider text-navy-900">+ Adicionar Novo Item ou Acréscimo ao Orçamento</p>
+          <div class="grid grid-cols-1 sm:grid-cols-12 gap-3 text-sm">
+            <div class="sm:col-span-4">
+              <label class="block text-xs font-semibold text-slate-600 mb-1">Nome do Item</label>
+              <input type="text" id="newExpItem" placeholder="Ex.: Embalagens e laços" class="w-full border border-slate-300 rounded-xl px-3 py-2 bg-white text-navy-900">
+            </div>
+            <div class="sm:col-span-3">
+              <label class="block text-xs font-semibold text-slate-600 mb-1">Valor (R$)</label>
+              <input type="number" step="0.01" min="0" id="newExpVal" placeholder="0,00" class="w-full border border-slate-300 rounded-xl px-3 py-2 bg-white font-bold text-navy-900">
+            </div>
+            <div class="sm:col-span-3">
+              <label class="block text-xs font-semibold text-slate-600 mb-1">Status Inicial</label>
+              <select id="newExpStatus" class="w-full border border-slate-300 rounded-xl px-3 py-2 bg-white text-navy-900">
+                <option value="Orçado / Aguardando Compra">Orçado / Aguardando Compra</option>
+                <option value="Sinal Pago / Em Produção">Sinal Pago / Em Produção</option>
+                <option value="Comprado / Aguardando Entrega">Comprado / Aguardando Entrega</option>
+                <option value="Pago / Concluído">Pago / Concluído</option>
+              </select>
+            </div>
+            <div class="sm:col-span-2 flex items-end">
+              <button type="button" onclick="addNewBudgetItem()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs py-2.5 px-3 rounded-xl transition">
+                + Adicionar
+              </button>
+            </div>
+            <div class="sm:col-span-6">
+              <label class="block text-xs font-semibold text-slate-600 mb-1">Detalhamento / Data de Produção</label>
+              <input type="text" id="newExpDetail" placeholder="Ex.: Pedido previsto para 20/11" class="w-full border border-slate-300 rounded-xl px-3 py-2 bg-white text-navy-900">
+            </div>
+            <div class="sm:col-span-6">
+              <label class="block text-xs font-semibold text-slate-600 mb-1">Observação / Prazo de Entrega</label>
+              <input type="text" id="newExpDelivery" placeholder="Ex.: Entrega prevista até 05/12" class="w-full border border-slate-300 rounded-xl px-3 py-2 bg-white text-navy-900">
+            </div>
           </div>
         </div>
       </div>
@@ -374,14 +402,12 @@
 
       <!-- 4 Cards KPI -->
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <!-- KPI 1 -->
         <div class="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-xs">
-          <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Orçamento Total Redondo</p>
+          <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Orçamento Total Previsto</p>
           <p id="kpiTotalBudget" class="font-display text-2xl sm:text-3xl font-extrabold text-navy-900 mt-2">R$ 9.029,08</p>
           <p class="text-xs text-slate-500 mt-1.5">Cerimônia + Kits + Passeio + 6 Adultos</p>
         </div>
 
-        <!-- KPI 2 -->
         <div class="bg-white rounded-2xl p-5 border border-emerald-200 shadow-xs relative overflow-hidden">
           <div class="flex items-center justify-between">
             <p class="text-xs font-semibold uppercase tracking-wider text-emerald-700">Total Real em Caixa Hoje</p>
@@ -391,18 +417,16 @@
           <p class="text-xs text-slate-500 mt-1.5">Somente valores já recebidos na conta</p>
         </div>
 
-        <!-- KPI 3 -->
         <div class="bg-white rounded-2xl p-5 border border-amber-200 shadow-xs">
           <p class="text-xs font-semibold uppercase tracking-wider text-amber-700">Saldo Restante Hoje</p>
           <p id="kpiRemaining" class="font-display text-2xl sm:text-3xl font-extrabold text-amber-600 mt-2">R$ 400,04</p>
-          <p id="kpiRemainingNote" class="text-xs text-slate-500 mt-1.5">Cai p/ R$ 250,04 c/ 2C + doação e fecha c/ 2B</p>
+          <p id="kpiRemainingNote" class="text-xs text-slate-500 mt-1.5">Coberto pelas pendências mapeadas</p>
         </div>
 
-        <!-- KPI 4 -->
         <div class="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-xs">
           <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Formandos Ativos</p>
           <p class="font-display text-2xl sm:text-3xl font-extrabold text-navy-700 mt-2">54 crianças</p>
-          <p class="text-xs text-slate-500 mt-1.5">40 no passeio + 6 adultos equipe</p>
+          <p id="kpiTripCountCard" class="text-xs text-slate-500 mt-1.5">40 vagas no passeio + 6 adultos equipe</p>
         </div>
       </div>
 
@@ -417,11 +441,11 @@
         </div>
         <div class="mt-3 flex flex-wrap items-center justify-between gap-2 text-xs text-slate-500">
           <span>✅ <strong>Transporte Oficial (Ônibus):</strong> Garantido por Parceria/Doação (R$ 0,00 para o caixa)</span>
-          <span id="pendingSummaryText">⏳ A Receber (não somados): R$ 50,00 (2C) + R$ 100,00 (Doação) + 2 ou 3 alunos (2B × R$ 146,00)</span>
+          <span id="pendingSummaryText">⏳ A Receber (não somados): R$ 50,00 (2C) + 3 alunos (2B × R$ 146,00)</span>
         </div>
       </div>
 
-      <!-- QUADRO DE PREVISÃO DE ABATIMENTO E FECHAMENTO DO SALDO RESTANTE -->
+      <!-- QUADRO DE PREVISÃO DE ABATIMENTO -->
       <div id="abatimentoCard" class="bg-gradient-to-br from-navy-900 via-navy-800 to-navy-900 text-white rounded-3xl p-6 sm:p-8 shadow-md border border-navy-700">
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 pb-5 border-b border-white/15">
           <div>
@@ -432,33 +456,29 @@
               Como o Saldo Restante de <span id="abatimentoSaldoAtual" class="text-gold-500">R$ 400,04</span> Será Quitado
             </h3>
             <p class="text-xs sm:text-sm text-slate-300 mt-1">
-              Os valores abaixo ainda não entraram na conta, mas já estão mapeados (R$ 146,00 por criança pendente da Fase 2B) e cobrem 100% da diferença com sobra.
+              Os valores abaixo ainda não entraram na conta, mas já estão mapeados (R$ 146,00 por criança pendente da Fase 2B) e cobrem 100% da diferença.
             </p>
           </div>
           <div class="bg-white/10 border border-white/15 rounded-2xl px-4 py-3 text-left md:text-right shrink-0">
             <p class="text-[11px] uppercase tracking-wider text-slate-300 font-semibold">Total Previsto a Entrar</p>
-            <p id="abatimentoTotalPrevisto" class="font-display text-lg sm:text-xl font-extrabold text-emerald-300 mt-0.5">R$ 442,00 a R$ 588,00</p>
+            <p id="abatimentoTotalPrevisto" class="font-display text-lg sm:text-xl font-extrabold text-emerald-300 mt-0.5">R$ 488,00</p>
           </div>
         </div>
 
-        <div id="abatimentoStepsGrid" class="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          <!-- Renderizado dinamicamente via JS -->
-        </div>
+        <div id="abatimentoStepsGrid" class="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"></div>
 
         <div id="abatimentoFooterNote" class="mt-5 bg-emerald-500/15 border border-emerald-400/30 rounded-2xl px-4 py-3.5 text-xs sm:text-sm text-emerald-100 flex items-start gap-2.5">
           <span class="text-base shrink-0">🛡️</span>
-          <p id="abatimentoReservaText">
-            <strong>Quitação 100% Garantida + Sobra de Segurança:</strong> Somando R$ 50,00 (Fase 2C) + R$ 100,00 (Última Doação) + <strong>2 crianças da Fase 2B (R$ 292,00)</strong> = <strong>R$ 442,00</strong> (sobra de <strong>R$ 41,96</strong>). Se pagarem as <strong>3 crianças da Fase 2B (R$ 438,00)</strong> = <strong>R$ 588,00</strong> (sobra de <strong>R$ 187,96</strong>).
-          </p>
+          <p id="abatimentoReservaText"></p>
         </div>
       </div>
 
-      <!-- TABELA 1: CAIXA REAL DISPONÍVEL HOJE -->
+      <!-- TABELA 1: CAIXA REAL DISPONÍVEL HOJE (ENTRADAS INDIVIDUALIZADAS) -->
       <div class="bg-white rounded-3xl border border-slate-200/80 shadow-xs overflow-hidden">
         <div class="px-6 py-4 bg-slate-50 border-b border-slate-200/80 flex flex-wrap items-center justify-between gap-2">
           <div>
-            <h3 class="font-display font-bold text-navy-900 text-base sm:text-lg">1. Caixa Real Disponível Hoje (Valores Efetivamente Recebidos)</h3>
-            <p class="text-xs text-slate-500">Valores prometidos ou pendentes são listados separadamente e não entram na soma atual.</p>
+            <h3 class="font-display font-bold text-navy-900 text-base sm:text-lg">1. Entradas & Caixa Real Disponível Hoje (Valores Recebidos)</h3>
+            <p class="text-xs text-slate-500">Cada entrada e recebimento individualizado aparece detalhado abaixo.</p>
           </div>
           <span class="text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 px-3 py-1 rounded-full">
             Conferido em Conta
@@ -469,15 +489,13 @@
           <table class="w-full text-left border-collapse">
             <thead>
               <tr class="bg-slate-50/70 border-b border-slate-200 text-xs font-bold uppercase tracking-wider text-slate-500">
-                <th class="py-3.5 px-6">Origem / Turma</th>
-                <th class="py-3.5 px-6">Situação Real</th>
+                <th class="py-3.5 px-6">Origem / Pagador</th>
+                <th class="py-3.5 px-6">Situação / Observação</th>
                 <th class="py-3.5 px-6 text-right">Valor Já Recebido</th>
                 <th class="py-3.5 px-6 text-right">A Receber (Não Somado)</th>
               </tr>
             </thead>
-            <tbody id="cashTableBody" class="divide-y divide-slate-100 text-sm">
-              <!-- Renderizado dinamicamente -->
-            </tbody>
+            <tbody id="cashTableBody" class="divide-y divide-slate-100 text-sm"></tbody>
             <tfoot>
               <tr class="bg-navy-900 text-white font-display font-bold">
                 <td class="py-4 px-6" colspan="2">TOTAL REAL EM CAIXA HOJE</td>
@@ -489,14 +507,14 @@
         </div>
       </div>
 
-      <!-- TABELA 2: ORÇAMENTO DETALHADO E DESTINAÇÃO DOS RECURSOS -->
+      <!-- TABELA 2: ORÇAMENTO DETALHADO, PRODUÇÃO E PRAZOS DE ENTREGA -->
       <div class="bg-white rounded-3xl border border-slate-200/80 shadow-xs overflow-hidden">
         <div class="px-6 py-4 bg-slate-50 border-b border-slate-200/80 flex flex-wrap items-center justify-between gap-2">
           <div>
-            <h3 class="font-display font-bold text-navy-900 text-base sm:text-lg">2. Orçamento Detalhado & Destinação dos Recursos</h3>
-            <p class="text-xs text-slate-500">Planejamento completo para os 54 formandos na cerimônia e 40 crianças + 6 adultos no passeio.</p>
+            <h3 class="font-display font-bold text-navy-900 text-base sm:text-lg">2. Orçamento Detalhado, Status de Compra & Prazos de Entrega</h3>
+            <p class="text-xs text-slate-500">Acompanhe o que ainda está em orçamento, datas de produção e previsão de entrega de cada item.</p>
           </div>
-          <span class="text-xs font-semibold bg-navy-900/5 text-navy-900 border border-navy-900/15 px-3 py-1 rounded-full">
+          <span id="budgetTableBadge" class="text-xs font-semibold bg-navy-900/5 text-navy-900 border border-navy-900/15 px-3 py-1 rounded-full">
             Meta: R$ 9.029,08
           </span>
         </div>
@@ -506,22 +524,29 @@
             <thead>
               <tr class="bg-slate-50/70 border-b border-slate-200 text-xs font-bold uppercase tracking-wider text-slate-500">
                 <th class="py-3.5 px-6">Item / Categoria</th>
-                <th class="py-3.5 px-6">Detalhamento & Cronograma</th>
-                <th class="py-3.5 px-6 text-center">Status</th>
-                <th class="py-3.5 px-6 text-right">Valor Total</th>
+                <th class="py-3.5 px-6">Detalhamento, Produção & Prazo de Entrega</th>
+                <th class="py-3.5 px-6 text-center">Status Atual</th>
+                <th class="py-3.5 px-6 text-right">Valor Previsto</th>
               </tr>
             </thead>
-            <tbody id="budgetTableBody" class="divide-y divide-slate-100 text-sm">
-              <!-- Renderizado dinamicamente -->
-            </tbody>
+            <tbody id="budgetTableBody" class="divide-y divide-slate-100 text-sm"></tbody>
             <tfoot>
               <tr class="bg-slate-900 text-white font-display font-bold">
-                <td class="py-4 px-6" colspan="3">ORÇAMENTO TOTAL REDONDO DO EVENTO</td>
-                <td class="py-4 px-6 text-right text-gold-500 text-base sm:text-lg">R$ 9.029,08</td>
+                <td class="py-4 px-6" colspan="3">ORÇAMENTO TOTAL PREVISTO DO EVENTO</td>
+                <td id="budgetTableTotal" class="py-4 px-6 text-right text-gold-500 text-base sm:text-lg">R$ 9.029,08</td>
               </tr>
             </tfoot>
           </table>
         </div>
+      </div>
+
+      <!-- Histórico Público de Atualizações -->
+      <div id="publicHistoryCard" class="bg-white rounded-3xl border border-slate-200/80 shadow-xs p-6">
+        <div class="flex items-center justify-between gap-2 mb-3">
+          <h3 class="font-display font-bold text-navy-900 text-base sm:text-lg">📋 Registro de Atualizações Recentes</h3>
+          <span class="text-xs text-slate-400">Histórico automático</span>
+        </div>
+        <ul id="publicHistoryList" class="space-y-2 text-xs sm:text-sm text-slate-600"></ul>
       </div>
     </section>
 
@@ -539,9 +564,7 @@
         </div>
       </div>
 
-      <!-- Timeline -->
       <div class="mt-8 relative pl-6 sm:pl-8 border-l-2 border-navy-700/25 space-y-8">
-        <!-- Etapa 1: Chegada e Café da Manhã -->
         <div class="relative">
           <span class="absolute -left-[33px] sm:-left-[41px] top-1 w-4 h-4 rounded-full bg-gold-500 ring-4 ring-white"></span>
           <div class="bg-amber-50/70 border border-amber-200/90 rounded-2xl p-4 sm:p-5">
@@ -555,7 +578,6 @@
           </div>
         </div>
 
-        <!-- Etapa 2: Saída da Escola -->
         <div class="relative">
           <span class="absolute -left-[33px] sm:-left-[41px] top-1 w-4 h-4 rounded-full bg-navy-900 ring-4 ring-white"></span>
           <div class="bg-slate-50 border border-slate-200/80 rounded-2xl p-4 sm:p-5">
@@ -568,7 +590,6 @@
           </div>
         </div>
 
-        <!-- Etapa 3: Shopping Serramar -->
         <div class="relative">
           <span class="absolute -left-[33px] sm:-left-[41px] top-1 w-4 h-4 rounded-full bg-gold-500 ring-4 ring-white"></span>
           <div class="bg-slate-50 border border-slate-200/80 rounded-2xl p-4 sm:p-5">
@@ -581,7 +602,6 @@
           </div>
         </div>
 
-        <!-- Etapa 4: Jump Kids -->
         <div class="relative">
           <span class="absolute -left-[33px] sm:-left-[41px] top-1 w-4 h-4 rounded-full bg-navy-700 ring-4 ring-white"></span>
           <div class="bg-slate-50 border border-slate-200/80 rounded-2xl p-4 sm:p-5">
@@ -595,7 +615,6 @@
           </div>
         </div>
 
-        <!-- Etapa 5: Saída do Jump Kids -->
         <div class="relative">
           <span class="absolute -left-[33px] sm:-left-[41px] top-1 w-4 h-4 rounded-full bg-navy-900 ring-4 ring-white"></span>
           <div class="bg-slate-50 border border-slate-200/80 rounded-2xl p-4 sm:p-5">
@@ -608,7 +627,6 @@
           </div>
         </div>
 
-        <!-- Etapa 6: Previsão de Chegada na Escola -->
         <div class="relative">
           <span class="absolute -left-[33px] sm:-left-[41px] top-1 w-4 h-4 rounded-full bg-emerald-600 ring-4 ring-white"></span>
           <div class="bg-emerald-50/60 border border-emerald-200 rounded-2xl p-4 sm:p-5">
@@ -637,7 +655,6 @@
           </p>
         </div>
 
-        <!-- Filtro por Turma e Busca -->
         <div class="flex flex-col sm:flex-row gap-2.5">
           <div class="relative">
             <input type="text" id="studentSearch" oninput="renderStudents()" placeholder="Buscar nome do aluno..." class="w-full sm:w-64 pl-9 pr-3 py-2 text-sm border border-slate-200 rounded-xl bg-slate-50 focus:bg-white focus:ring-2 focus:ring-navy-700 outline-none">
@@ -655,16 +672,21 @@
         </div>
       </div>
 
-      <!-- Nota informativa no modo Admin sobre marcação de passeio -->
-      <div id="adminStudentHint" class="hidden mt-4 bg-amber-50 border border-amber-200 rounded-xl px-4 py-2.5 text-xs text-amber-900 flex items-center justify-between gap-2">
-        <span>✏️ <strong>Modo Edição:</strong> Clique na tag ao lado de cada aluno para marcar/desmarcar quem vai ao Passeio de 09/12 (40 vagas).</span>
-        <span id="adminTripCounter" class="font-bold bg-white px-2.5 py-1 rounded-lg border border-amber-300">0 / 40 marcados</span>
+      <!-- Barra de Edição e Salvamento dos Alunos no Passeio (Modo Admin) -->
+      <div id="adminStudentHint" class="hidden mt-4 bg-amber-50 border-2 border-amber-300 rounded-2xl p-4 text-xs text-amber-950 flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <p class="font-bold text-sm text-navy-900">✏️ Marcação de Presença no Passeio (09/12)</p>
+          <p class="text-slate-700 mt-0.5">Clique nos botões ao lado dos alunos para marcar/desmarcar. Cada clique já salva automaticamente na nuvem, ou use o botão confirmar ao lado.</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <span id="adminTripCounter" class="font-bold text-sm bg-white px-3 py-1.5 rounded-xl border border-amber-300 text-navy-900">0 / 40 marcados</span>
+          <button type="button" onclick="forceSaveStudentsTrip()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs px-4 py-2 rounded-xl transition shadow-xs">
+            💾 Confirmar Lista Salva
+          </button>
+        </div>
       </div>
 
-      <!-- Grid das Turmas -->
-      <div id="studentsContainer" class="mt-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <!-- Renderizado dinamicamente -->
-      </div>
+      <div id="studentsContainer" class="mt-6 grid grid-cols-1 lg:grid-cols-3 gap-6"></div>
     </section>
 
   </main>
@@ -684,7 +706,7 @@
     </div>
   </footer>
 
-  <!-- MODAL LOGIN ADMINISTRADORA -->
+  <!-- MODAL LOGIN ADMINISTRADORA (SEM DICA DE SENHA) -->
   <div id="adminLoginModal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
     <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-7 shadow-2xl border border-slate-200">
       <div class="flex items-center justify-between mb-4">
@@ -700,10 +722,7 @@
       </div>
 
       <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
-        Digite a senha da administração para desbloquear o painel confidencial e editar os dados financeiros e de passeio.
-      </p>
-      <p class="mt-2 text-xs bg-slate-100 text-slate-600 px-3 py-2 rounded-xl border border-slate-200">
-        💡 Senha padrão inicial para teste: <strong class="text-navy-900 font-mono">formatura2026</strong> <em>(você pode alterar após entrar)</em>
+        Acesso exclusivo para gestão financeira, controle de produção e confirmação do passeio.
       </p>
 
       <form onsubmit="handleAdminLogin(event)" class="mt-4 space-y-4">
@@ -724,11 +743,11 @@
   <div id="changePasswordModal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
     <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-200">
       <h3 class="font-display font-bold text-navy-900 text-lg">Alterar Senha da Administradora</h3>
-      <p class="text-xs text-slate-500 mt-1">A nova senha será salva para seus próximos acessos.</p>
+      <p class="text-xs text-slate-500 mt-1">A nova senha será salva na nuvem para seus próximos acessos.</p>
       <form onsubmit="handleChangePassword(event)" class="mt-4 space-y-4">
         <div>
           <label class="block text-xs font-semibold text-slate-700 mb-1">Nova Senha (mínimo 4 caracteres)</label>
-          <input type="text" id="newPasswordInput" required minlength="4" placeholder="Ex.: formatura2026" class="w-full border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-navy-700 outline-none">
+          <input type="text" id="newPasswordInput" required minlength="4" placeholder="Digite a nova senha..." class="w-full border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-navy-700 outline-none">
         </div>
         <div class="flex justify-end gap-2">
           <button type="button" onclick="closePasswordChangeModal()" class="px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-100 rounded-xl">Cancelar</button>
@@ -744,11 +763,10 @@
     <span id="toastMessage">Alterações salvas com sucesso!</span>
   </div>
 
-  <!-- FIREBASE REALTIME DATABASE SDK v10 COMPAT & LÓGICA DO PORTAL -->
+  <!-- FIREBASE REALTIME DATABASE SDK v10 COMPAT -->
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
   <script>
-    // Configuração oficial do projeto Firebase Realtime Database da usuária
     const firebaseConfig = {
       apiKey: "AIzaSyAT1KSIxhku9IT1CcJ6V93AqrYtXoJX_rQ",
       authDomain: "formatura-benedita-2026.firebaseapp.com",
@@ -759,7 +777,6 @@
       appId: "1:378030992923:web:177b49044c8bb55c4cd2be"
     };
 
-    // --- DADOS INICIAIS CONSOLIDADOS (54 FORMANDOS + ORÇAMENTO R$ 9.029,08) ---
     const INITIAL_STUDENTS = [
       // 2ª Etapa Pré-Escola A — Sala 010 (18 Ativos)
       { id: '2A-01', turma: '2A', sala: 'Sala 010', nome: 'Ágatha Maia Pereira', passeio: false },
@@ -825,78 +842,118 @@
     const DEFAULT_STATE = {
       adminPassword: 'benedita2026',
       totalBudget: 9029.08,
-      cash: {
-        fase2A: 3696.70,
-        fase2B: 3451.34,
-        pendentes2B: 3,
-        fase2C: 1191.00,
-        pendente2C: 50.00,
-        doacoes: 290.00
-      },
+      pendentes2B: 3,
+      pendente2C: 50.00,
+      cashEntries: [
+        {
+          id: 'src-2a',
+          origem: 'Fase 2A',
+          nota: 'Concluída (inclui rendimento de poupança de R$ 16,85)',
+          valor: 3696.70,
+          fixed: true
+        },
+        {
+          id: 'src-2b',
+          origem: 'Fase 2B (Ana)',
+          nota: 'Recebido em conta até o momento',
+          valor: 3451.34,
+          fixed: true
+        },
+        {
+          id: 'src-2c',
+          origem: 'Fase 2C (Pamela)',
+          nota: 'Recebido em conta até o momento',
+          valor: 1191.00,
+          fixed: true
+        },
+        {
+          id: 'src-doacoes',
+          origem: 'Doações e Rifas — Escola',
+          nota: 'Recebido em conta',
+          valor: 290.00,
+          fixed: true
+        }
+      ],
       suppliers: [
         {
           id: 'decoracao',
           item: 'Decoração Oficial do Paço Municipal',
           detail: 'Painel Azul e Dourado com balões — 54 formandos',
+          deliveryNote: 'Montagem no dia 16/12 antes da cerimônia',
           value: 1190.00,
+          statusLabel: 'Orçado / Aguardando Compra',
           paid: false
         },
         {
           id: 'canecas',
           item: 'Canecas Personalizadas (54 unidades)',
-          detail: '54 un. × R$ 28,00 (Sinal de 50% R$ 756,00 em 16/11 + restante até 16/12)',
+          detail: '54 un. × R$ 28,00 (Sinal de 50% R$ 756,00 + restante na entrega)',
+          deliveryNote: 'Prazo de entrega a definir no fechamento da arte',
           value: 1512.00,
-          paid: true,
-          statusLabel: 'Fechado / Pago'
+          statusLabel: 'Orçado / Aguardando Compra',
+          paid: false
         },
         {
           id: 'lousas_portaretratos',
-          item: 'Lousas Mágicas + Porta-retratos (Mercado Livre — 7 itens)',
-          detail: 'Compra fechada com frete grátis e cupom de R$ 10,00 aplicado (economia de R$ 216,52)',
+          item: 'Lousas Mágicas + Porta-retratos (54 kits)',
+          detail: 'Cotação com frete grátis e cupom aplicado (economia de R$ 216,52)',
+          deliveryNote: 'Prazo de entrega a informar após efetivação da compra',
           value: 743.08,
-          paid: true,
-          statusLabel: 'Compra Realizada / Fechada'
+          statusLabel: 'Orçado / Aguardando Compra',
+          paid: false
         },
         {
           id: 'doces_fotos',
           item: 'Doces, Impressão de Fotos e Embrulhos (54 kits)',
-          detail: 'Complemento do Kit Lembrancinhas (Total Kits: R$ 2.733,08 • média R$ 50,61/aluno)',
+          detail: 'Complemento do Kit Lembrancinhas (média R$ 50,61/aluno)',
+          deliveryNote: 'Produção prevista para a primeira semana de dezembro',
           value: 478.00,
+          statusLabel: 'Orçado / Aguardando Compra',
           paid: false
         },
         {
           id: 'playhouse',
           item: 'Passeio Caraguatatuba — Play House',
           detail: '40 crianças × R$ 37,25 (Shopping Serramar)',
+          deliveryNote: 'Utilização no dia 09/12 às 10h00',
           value: 1490.00,
+          statusLabel: 'Orçado / Aguardando Compra',
           paid: false
         },
         {
           id: 'jumpkids',
           item: 'Passeio Caraguatatuba — Jump Kids',
           detail: '40 crianças × R$ 50,00 (inclui lanche do parque)',
+          deliveryNote: 'Utilização no dia 09/12 às 14h30',
           value: 2000.00,
+          statusLabel: 'Orçado / Aguardando Compra',
           paid: false
         },
         {
           id: 'mcdonalds',
           item: 'Passeio Caraguatatuba — McLanche Feliz',
           detail: '40 crianças × R$ 32,90 (Shopping Serramar)',
+          deliveryNote: 'Almoço no dia 09/12 no Shopping Serramar',
           value: 1316.00,
+          statusLabel: 'Orçado / Aguardando Compra',
           paid: false
         },
         {
           id: 'adultos',
           item: 'Alimentação Equipe Escolar no Passeio',
           detail: '6 adultos × R$ 50,00 (professoras e APIs acompanhantes)',
+          deliveryNote: 'Dia 09/12 durante o passeio',
           value: 300.00,
+          statusLabel: 'Orçado / Reservado',
           paid: false
         },
         {
           id: 'onibus',
           item: 'Transporte Oficial (Ônibus — 40 crianças + 6 adultos)',
           detail: 'Garantido por Parceria/Doação — Custo zero para o caixa da formatura',
+          deliveryNote: 'Saída 08h00 da escola no dia 09/12',
           value: 0.00,
+          statusLabel: '100% Doado / Garantido',
           paid: true,
           isDonation: true
         }
@@ -904,38 +961,71 @@
       history: [
         {
           date: '13/11/2026',
-          text: 'Compra de Lousas Mágicas e Porta-retratos fechada no Mercado Livre (R$ 743,08 com frete grátis).'
+          text: 'Portal atualizado com controle individualizado de entradas, prazos de entrega e presença no passeio.'
         }
       ],
       students: INITIAL_STUDENTS
     };
 
-    const LOCAL_STORAGE_KEY = 'benedita_formatura_2026_rtdb_v1';
+    const LOCAL_STORAGE_KEY = 'benedita_formatura_2026_rtdb_v2';
     let appState = loadLocalState();
     let isAdmin = false;
     let currentClassFilter = 'ALL';
     let dbRef = null;
-    let isFirebaseConnected = false;
 
     function loadLocalState() {
       try {
         const saved = localStorage.getItem(LOCAL_STORAGE_KEY);
-        if (saved) {
-          const parsed = JSON.parse(saved);
-          return mergeState(parsed);
-        }
+        if (saved) return mergeState(JSON.parse(saved));
       } catch (e) {}
       return JSON.parse(JSON.stringify(DEFAULT_STATE));
     }
 
     function mergeState(remote) {
+      if (!remote || typeof remote !== 'object') return JSON.parse(JSON.stringify(DEFAULT_STATE));
+
+      // Migração suave caso o Firebase tenha a estrutura antiga (cash.fase2A etc.)
+      let entries = Array.isArray(remote.cashEntries) ? remote.cashEntries : null;
+      let pend2B = remote.pendentes2B !== undefined ? Number(remote.pendentes2B) : 3;
+      let pend2C = remote.pendente2C !== undefined ? Number(remote.pendente2C) : 50.00;
+
+      if (!entries && remote.cash) {
+        entries = [
+          { id: 'src-2a', origem: 'Fase 2A', nota: 'Concluída (inclui rendimento de poupança)', valor: Number(remote.cash.fase2A || 3696.70), fixed: true },
+          { id: 'src-2b', origem: 'Fase 2B (Ana)', nota: 'Recebido em conta até o momento', valor: Number(remote.cash.fase2B || 3451.34), fixed: true },
+          { id: 'src-2c', origem: 'Fase 2C (Pamela)', nota: 'Recebido em conta até o momento', valor: Number(remote.cash.fase2C || 1191.00), fixed: true },
+          { id: 'src-doacoes', origem: 'Doações e Rifas — Escola', nota: 'Recebido em conta', valor: Number(remote.cash.doacoes || 290.00), fixed: true }
+        ];
+        pend2B = remote.cash.pendentes2B !== undefined ? Number(remote.cash.pendentes2B) : 3;
+        pend2C = remote.cash.pendente2C !== undefined ? Number(remote.cash.pendente2C) : 50.00;
+      }
+
+      // Garante que os 54 alunos existam e preservem as marcações passeio: true/false
+      let mergedStudents = INITIAL_STUDENTS.map(initSt => {
+        if (Array.isArray(remote.students)) {
+          const found = remote.students.find(rs => rs.id === initSt.id);
+          if (found) return { ...initSt, passeio: Boolean(found.passeio) };
+        }
+        return { ...initSt };
+      });
+
+      const mergedSuppliers = Array.isArray(remote.suppliers)
+        ? remote.suppliers.map(s => ({
+            ...s,
+            deliveryNote: s.deliveryNote || '',
+            statusLabel: s.statusLabel || (s.isDonation ? '100% Doado / Garantido' : (s.paid ? 'Pago / Concluído' : 'Orçado / Aguardando Compra'))
+          }))
+        : JSON.parse(JSON.stringify(DEFAULT_STATE.suppliers));
+
       return {
-        ...DEFAULT_STATE,
-        ...remote,
-        cash: { ...DEFAULT_STATE.cash, ...(remote.cash || {}) },
-        suppliers: Array.isArray(remote.suppliers) ? remote.suppliers : DEFAULT_STATE.suppliers,
-        history: Array.isArray(remote.history) ? remote.history : DEFAULT_STATE.history,
-        students: Array.isArray(remote.students) ? remote.students : DEFAULT_STATE.students
+        adminPassword: remote.adminPassword || DEFAULT_STATE.adminPassword,
+        totalBudget: Number(remote.totalBudget) || DEFAULT_STATE.totalBudget,
+        pendentes2B: pend2B,
+        pendente2C: pend2C,
+        cashEntries: entries || JSON.parse(JSON.stringify(DEFAULT_STATE.cashEntries)),
+        suppliers: mergedSuppliers,
+        history: Array.isArray(remote.history) ? remote.history : JSON.parse(JSON.stringify(DEFAULT_STATE.history)),
+        students: mergedStudents
       };
     }
 
@@ -951,81 +1041,7 @@
       window._toastTimer = setTimeout(() => toast.classList.add('hidden'), 3500);
     }
 
-    function injectExtraAdminControls() {
-      // Adiciona selo público de sincronização em tempo real no cabeçalho
-      const headerRight = document.querySelector('#mainHeader .max-w-6xl');
-      if (headerRight && !document.getElementById('publicCloudBadge')) {
-        const badge = document.createElement('div');
-        badge.id = 'publicCloudBadge';
-        badge.className = 'hidden sm:inline-flex items-center gap-1.5 text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200 px-3 py-1.5 rounded-full';
-        badge.innerHTML = '<span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span><span>Sincronizado na nuvem • Tempo real</span>';
-        const loginBtn = document.getElementById('adminLoginBtn');
-        headerRight.insertBefore(badge, loginBtn);
-      }
-
-      // Remove campo antigo de última doação se existir no DOM e injeta painel de acréscimo de compras + histórico
-      const oldUltimaInput = document.getElementById('editUltimaDoacao');
-      if (oldUltimaInput && oldUltimaInput.parentElement) {
-        oldUltimaInput.parentElement.remove();
-      }
-      const oldBtnDon = document.getElementById('btnQuickDonation');
-      if (oldBtnDon) oldBtnDon.remove();
-
-      const secretPanel = document.getElementById('secretCommissionPanel');
-      if (secretPanel && !document.getElementById('extraPurchaseBox')) {
-        const extraBox = document.createElement('div');
-        extraBox.id = 'extraPurchaseBox';
-        extraBox.className = 'mt-6 bg-white border border-slate-200 rounded-2xl p-5 space-y-4';
-        extraBox.innerHTML = `
-          <div class="flex flex-wrap items-center justify-between gap-2">
-            <h3 class="font-display font-bold text-navy-900 text-base">🛒 Registrar Nova Compra ou Acréscimo de Valor</h3>
-            <span class="text-xs text-slate-500">Recalcula o Orçamento Total e publica na hora</span>
-          </div>
-          <div class="grid grid-cols-1 sm:grid-cols-12 gap-3 text-sm">
-            <div class="sm:col-span-5">
-              <label class="block text-xs font-semibold text-slate-600 mb-1">Descrição do Item / Acréscimo</label>
-              <input type="text" id="newItemTitle" placeholder="Ex.: Balões extras ou ajuste kit" class="w-full border border-slate-300 rounded-xl px-3 py-2 text-navy-900 focus:ring-2 focus:ring-navy-700 outline-none">
-            </div>
-            <div class="sm:col-span-4">
-              <label class="block text-xs font-semibold text-slate-600 mb-1">Detalhamento</label>
-              <input type="text" id="newItemDetail" placeholder="Ex.: Compra complementar" class="w-full border border-slate-300 rounded-xl px-3 py-2 text-navy-900 focus:ring-2 focus:ring-navy-700 outline-none">
-            </div>
-            <div class="sm:col-span-3">
-              <label class="block text-xs font-semibold text-slate-600 mb-1">Valor (R$)</label>
-              <input type="number" step="0.01" id="newItemValue" placeholder="0,00" class="w-full border border-slate-300 rounded-xl px-3 py-2 font-semibold text-navy-900 focus:ring-2 focus:ring-navy-700 outline-none">
-            </div>
-          </div>
-          <div class="flex flex-wrap items-center justify-between gap-3">
-            <label class="inline-flex items-center gap-2 text-xs font-semibold text-slate-700 cursor-pointer">
-              <input type="checkbox" id="newItemPaid" checked class="w-4 h-4 rounded text-navy-900">
-              <span>Já está comprado / pago</span>
-            </label>
-            <button type="button" onclick="addNewExpenseItem()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs sm:text-sm px-4 py-2 rounded-xl transition shadow-xs">
-              + Adicionar ao Orçamento & Publicar
-            </button>
-          </div>
-        `;
-        secretPanel.appendChild(extraBox);
-      }
-
-      // Adiciona bloco público de Histórico de Atualizações Recentes abaixo da Tabela 2
-      const financeiroSection = document.getElementById('financeiro');
-      if (financeiroSection && !document.getElementById('publicHistoryCard')) {
-        const histCard = document.createElement('div');
-        histCard.id = 'publicHistoryCard';
-        histCard.className = 'bg-white rounded-3xl border border-slate-200/80 shadow-xs p-6';
-        histCard.innerHTML = `
-          <div class="flex items-center justify-between gap-2 mb-3">
-            <h3 class="font-display font-bold text-navy-900 text-base sm:text-lg">📋 Registro de Atualizações Recentes</h3>
-            <span class="text-xs text-slate-400">Histórico automático</span>
-          </div>
-          <ul id="publicHistoryList" class="space-y-2 text-xs sm:text-sm text-slate-600"></ul>
-        `;
-        financeiroSection.appendChild(histCard);
-      }
-    }
-
-    // --- CONEXÃO EM TEMPO REAL COM FIREBASE REALTIME DATABASE ---
+    // --- CONEXÃO EM TEMPO REAL COM FIREBASE ---
     function initFirebaseRealtime() {
       const adminBadge = document.getElementById('syncStatusBadge');
       const publicBadge = document.getElementById('publicCloudBadge');
@@ -1037,21 +1053,17 @@
         dbRef = database.ref('formatura2026/estado');
 
         dbRef.on('value', (snapshot) => {
-          isFirebaseConnected = true;
           if (adminBadge) adminBadge.textContent = '🟢 Sincronizado na Nuvem';
           if (publicBadge) {
-            publicBadge.innerHTML = '<span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span><span>Sincronizado na nuvem • Tempo real</span>';
+            publicBadge.innerHTML = '<span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span><span>Sincronizado • Tempo real</span>';
           }
 
           const val = snapshot.val();
           if (val === null) {
-            // Primeira abertura: grava automaticamente o estado oficial completo na nuvem
-            dbRef.set(appState).catch((err) => console.warn('Erro ao inicializar nuvem:', err));
+            dbRef.set(appState).catch(err => console.warn('Erro ao inicializar nuvem:', err));
           } else {
             appState = mergeState(val);
-            try {
-              localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(appState));
-            } catch (e) {}
+            try { localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(appState)); } catch (e) {}
             renderAll();
           }
         }, (error) => {
@@ -1071,64 +1083,58 @@
       const dateStr = now.toLocaleDateString('pt-BR') + ' ' + now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
       const list = Array.isArray(appState.history) ? appState.history : [];
       list.unshift({ date: dateStr, text: message });
-      appState.history = list.slice(0, 12);
+      appState.history = list.slice(0, 15);
     }
 
-    async function persistState(logText) {
+    async function persistState(logText, customToast) {
       if (logText) addHistoryLog(logText);
-      // Recalcula orçamento total somando os itens cadastrados
       const sumBudget = appState.suppliers.reduce((acc, item) => acc + Number(item.value || 0), 0);
       appState.totalBudget = Number(sumBudget.toFixed(2));
 
-      try {
-        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(appState));
-      } catch (e) {}
+      try { localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(appState)); } catch (e) {}
       renderAll();
 
       if (dbRef) {
         try {
           await dbRef.set(appState);
-          showToast('Publicado na nuvem! Todos os pais já veem a atualização.');
+          showToast(customToast || 'Salvo na nuvem! Todos os pais já veem a atualização.');
         } catch (err) {
           console.error(err);
-          showToast('Salvo localmente. Verifique sua internet para sincronizar na nuvem.');
+          showToast('Salvo no aparelho. Verifique a internet para sincronizar na nuvem.');
         }
       } else {
-        showToast('Alterações salvas localmente!');
+        showToast(customToast || 'Alterações salvas localmente!');
       }
     }
 
-    // --- RENDERIZAÇÃO DO PORTAL ---
+    // --- RENDERIZAÇÃO GERAL ---
     function renderAll() {
-      const c = appState.cash;
       const COTA_2B = 146.00;
-      const totalCash = Number(c.fase2A) + Number(c.fase2B) + Number(c.fase2C) + Number(c.doacoes);
+      const totalCash = appState.cashEntries.reduce((sum, item) => sum + Number(item.valor || 0), 0);
       const budget = Number(appState.totalBudget) || 9029.08;
       const remaining = Math.max(0, budget - totalCash);
-      const pct = Math.min(100, (totalCash / budget) * 100);
+      const surplus = totalCash > budget ? totalCash - budget : 0;
+      const pct = budget > 0 ? Math.min(100, (totalCash / budget) * 100) : 0;
       const pctFormatted = pct.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + '%';
 
-      const pend2C = Number(c.pendente2C || 0);
-      const pend2BCount = Number(c.pendentes2B || 0);
-      const cenarioMinCotas = pend2BCount >= 2 ? 2 : pend2BCount;
-      const cenarioMaxCotas = pend2BCount;
-      const est2BMin = cenarioMinCotas * COTA_2B;
-      const est2BMax = cenarioMaxCotas * COTA_2B;
-      const totalPrevistoMin = pend2C + est2BMin;
+      const pend2C = Number(appState.pendente2C || 0);
+      const pend2BCount = Number(appState.pendentes2B || 0);
+      const est2BMax = pend2BCount * COTA_2B;
       const totalPrevistoMax = pend2C + est2BMax;
       const saldoApos2C = Math.max(0, remaining - pend2C);
       const reservaMax = Math.max(0, totalPrevistoMax - remaining);
-      const faltaCenario2 = Math.max(0, remaining - totalPrevistoMin);
 
       // KPIs
       document.getElementById('kpiTotalBudget').textContent = formatBRL(budget);
       document.getElementById('kpiCashOnHand').textContent = formatBRL(totalCash);
       document.getElementById('kpiPercentBadge').textContent = pctFormatted;
-      document.getElementById('kpiRemaining').textContent = formatBRL(remaining);
+      document.getElementById('kpiRemaining').textContent = surplus > 0 ? `+ ${formatBRL(surplus)}` : formatBRL(remaining);
       document.getElementById('kpiRemainingNote').textContent =
-        remaining === 0
-          ? 'Meta 100% atingida!'
-          : `Quita 100% c/ pendências 2B + 2C (sobra ${formatBRL(reservaMax)})`;
+        surplus > 0
+          ? 'Meta superada! Saldo positivo em caixa.'
+          : remaining === 0
+            ? 'Meta 100% atingida!'
+            : `Coberto pelas pendências mapeadas (sobra prevista ${formatBRL(reservaMax)})`;
 
       // Barra de Progresso
       document.getElementById('progressText').textContent = `${formatBRL(totalCash)} de ${formatBRL(budget)} (${pctFormatted})`;
@@ -1137,7 +1143,7 @@
       const pendingParts = [];
       if (pend2C > 0) pendingParts.push(`${formatBRL(pend2C)} (Fase 2C)`);
       if (pend2BCount > 0) {
-        pendingParts.push(pend2BCount === 3 ? '3 alunos (Fase 2B × R$ 146,00 = R$ 438,00)' : `${pend2BCount} aluno(s) (Fase 2B × R$ 146,00)`);
+        pendingParts.push(`${pend2BCount} aluno(s) (Fase 2B × R$ 146,00 = ${formatBRL(est2BMax)})`);
       }
       document.getElementById('pendingSummaryText').textContent =
         pendingParts.length > 0
@@ -1186,88 +1192,77 @@
         </div>
       `;
 
-      if (remaining === 0) {
-        document.getElementById('abatimentoReservaText').innerHTML =
-          `<strong>Meta 100% Concluída!</strong> Todo o orçamento oficial de <strong>${formatBRL(budget)}</strong> já está garantido em caixa.`;
-      } else if (pend2BCount >= 2) {
-        document.getElementById('abatimentoReservaText').innerHTML =
-          `<strong>Sem necessidade de novas doações:</strong> Entrando ${formatBRL(pend2C)} (Fase 2C) + <strong>3 crianças da Fase 2B (${formatBRL(est2BMax)})</strong> = <strong>${formatBRL(totalPrevistoMax)}</strong>, quitamos 100% dos <strong>${formatBRL(remaining)}</strong> e ainda geramos uma reserva de <strong>+ ${formatBRL(reservaMax)}</strong> (caso paguem 2 crianças do 2B = ${formatBRL(totalPrevistoMin)}, ficaria apenas ${formatBRL(faltaCenario2)}).`;
-      } else {
-        document.getElementById('abatimentoReservaText').innerHTML =
-          `<strong>Quitação 100% Garantida:</strong> Com as entradas previstas (${formatBRL(totalPrevistoMax)}), quitamos os <strong>${formatBRL(remaining)}</strong> restantes com sobra de <strong>${formatBRL(reservaMax)}</strong>.`;
-      }
+      document.getElementById('abatimentoReservaText').innerHTML =
+        remaining === 0
+          ? `<strong>Meta 100% Concluída!</strong> Todo o orçamento previsto de <strong>${formatBRL(budget)}</strong> já está garantido em caixa.`
+          : `<strong>Sem necessidade de novas doações:</strong> Entrando ${formatBRL(pend2C)} (Fase 2C) + <strong>${pend2BCount} criança(s) da Fase 2B (${formatBRL(est2BMax)})</strong> = <strong>${formatBRL(totalPrevistoMax)}</strong>, quitamos 100% dos <strong>${formatBRL(remaining)}</strong> e ainda geramos uma reserva de segurança de <strong>+ ${formatBRL(reservaMax)}</strong>.`;
 
-      // Tabela 1: Caixa Real Disponível
-      const aReceber2BText = pend2BCount > 0
-        ? `${pend2BCount} criança(s) × R$ 146,00 (${formatBRL(est2BMax)})`
-        : 'R$ 0,00';
-
-      const cashRows = [
-        {
-          origem: 'Fase 2A',
-          situacao: 'Concluída (inclui rendimento de poupança de R$ 16,85)',
-          recebido: c.fase2A,
-          aReceber: 'R$ 0,00',
-          badgeClass: 'bg-emerald-50 text-emerald-700 border-emerald-200'
-        },
-        {
-          origem: 'Fase 2B (Ana)',
-          situacao: pend2BCount > 0 ? `Parcial (${17 - pend2BCount} alunos pagos; ${pend2BCount} pendentes)` : 'Concluída (todos pagos)',
-          recebido: c.fase2B,
-          aReceber: aReceber2BText,
-          badgeClass: pend2BCount > 0 ? 'bg-amber-50 text-amber-800 border-amber-200' : 'bg-emerald-50 text-emerald-700 border-emerald-200'
-        },
-        {
-          origem: 'Fase 2C (Pamela)',
-          situacao: pend2C > 0 ? `Parcial (aguardando ${formatBRL(pend2C)})` : 'Concluída',
-          recebido: c.fase2C,
-          aReceber: pend2C > 0 ? `${formatBRL(pend2C)} (pendente)` : 'R$ 0,00',
-          badgeClass: pend2C > 0 ? 'bg-amber-50 text-amber-800 border-amber-200' : 'bg-emerald-50 text-emerald-700 border-emerald-200'
-        },
-        {
-          origem: 'Doações e Rifas — Escola',
-          situacao: 'Recebido em conta',
-          recebido: c.doacoes,
-          aReceber: 'R$ 0,00',
-          badgeClass: 'bg-emerald-50 text-emerald-700 border-emerald-200'
+      // Tabela 1: Entradas Individualizadas e Caixa Real
+      document.getElementById('cashTableBody').innerHTML = appState.cashEntries.map(entry => {
+        let aReceberCell = 'R$ 0,00';
+        let badgeClass = 'bg-emerald-50 text-emerald-700 border-emerald-200';
+        if (entry.id === 'src-2b' && pend2BCount > 0) {
+          aReceberCell = `${pend2BCount} criança(s) × R$ 146,00 (${formatBRL(est2BMax)})`;
+          badgeClass = 'bg-amber-50 text-amber-800 border-amber-200';
+        } else if (entry.id === 'src-2c' && pend2C > 0) {
+          aReceberCell = `${formatBRL(pend2C)} (pendente)`;
+          badgeClass = 'bg-amber-50 text-amber-800 border-amber-200';
         }
-      ];
 
-      document.getElementById('cashTableBody').innerHTML = cashRows.map(r => `
-        <tr class="hover:bg-slate-50/80 transition">
-          <td class="py-3.5 px-6 font-bold text-navy-900">${r.origem}</td>
-          <td class="py-3.5 px-6">
-            <span class="inline-block text-xs font-medium px-2.5 py-1 rounded-lg border ${r.badgeClass}">
-              ${r.situacao}
-            </span>
-          </td>
-          <td class="py-3.5 px-6 text-right font-bold text-slate-800">${formatBRL(r.recebido)}</td>
-          <td class="py-3.5 px-6 text-right text-xs font-medium text-slate-500">${r.aReceber}</td>
-        </tr>
-      `).join('');
+        return `
+          <tr class="hover:bg-slate-50/80 transition">
+            <td class="py-3.5 px-6 font-bold text-navy-900">${entry.origem}</td>
+            <td class="py-3.5 px-6">
+              <span class="inline-block text-xs font-medium px-2.5 py-1 rounded-lg border ${badgeClass}">
+                ${entry.nota || 'Recebido em conta'}
+              </span>
+            </td>
+            <td class="py-3.5 px-6 text-right font-bold text-slate-800">${formatBRL(entry.valor)}</td>
+            <td class="py-3.5 px-6 text-right text-xs font-medium text-slate-500">${aReceberCell}</td>
+          </tr>
+        `;
+      }).join('');
 
       document.getElementById('cashTableTotal').textContent = formatBRL(totalCash);
 
-      // Tabela 2: Orçamento Detalhado
+      // Tabela 2: Orçamento Detalhado, Status Real e Prazo de Entrega
       document.getElementById('budgetTableBody').innerHTML = appState.suppliers.map(s => {
-        const statusBadge = s.isDonation
-          ? `<span class="inline-flex items-center gap-1 text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 px-2.5 py-1 rounded-full">🤝 100% Doado / Gratuito</span>`
-          : s.paid
-            ? `<span class="inline-flex items-center gap-1 text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 px-2.5 py-1 rounded-full">✔ ${s.statusLabel || 'Pago / Fechado'}</span>`
-            : `<span class="inline-flex items-center gap-1 text-xs font-semibold bg-slate-100 text-slate-600 border border-slate-200 px-2.5 py-1 rounded-full">⏳ Orçado / Reservado</span>`;
+        const statusText = s.isDonation ? '🤝 100% Doado / Gratuito' : (s.statusLabel || 'Orçado / Aguardando Compra');
+        const isConcluded = s.isDonation || s.paid || (statusText.toLowerCase().includes('pago') && !statusText.toLowerCase().includes('sinal'));
+        const isInProgress = statusText.toLowerCase().includes('produção') || statusText.toLowerCase().includes('comprado') || statusText.toLowerCase().includes('sinal');
+
+        const badgeStyle = isConcluded
+          ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
+          : isInProgress
+            ? 'bg-amber-50 text-amber-800 border-amber-200'
+            : 'bg-slate-100 text-slate-700 border-slate-200';
+
+        const deliveryHtml = s.deliveryNote
+          ? `<div class="mt-1.5 inline-flex items-center gap-1.5 text-xs font-medium text-navy-800 bg-blue-50/80 border border-blue-200/80 px-2.5 py-1 rounded-lg">
+               <span>📅</span>
+               <span>${s.deliveryNote}</span>
+             </div>`
+          : '';
 
         return `
           <tr class="hover:bg-slate-50/80 transition align-top">
             <td class="py-4 px-6 font-bold text-navy-900 sm:w-1/3">${s.item}</td>
-            <td class="py-4 px-6 text-xs sm:text-sm text-slate-600 leading-relaxed">${s.detail}</td>
-            <td class="py-4 px-6 text-center whitespace-nowrap">${statusBadge}</td>
+            <td class="py-4 px-6 text-xs sm:text-sm text-slate-600 leading-relaxed">
+              <div>${s.detail}</div>
+              ${deliveryHtml}
+            </td>
+            <td class="py-4 px-6 text-center whitespace-nowrap">
+              <span class="inline-flex items-center gap-1 text-xs font-semibold border px-2.5 py-1 rounded-full ${badgeStyle}">
+                ${statusText}
+              </span>
+            </td>
             <td class="py-4 px-6 text-right font-bold text-navy-900 whitespace-nowrap">${formatBRL(s.value)}</td>
           </tr>
         `;
       }).join('');
 
-      const budgetFooterCell = document.querySelector('#budgetTableBody + tfoot td:last-child');
-      if (budgetFooterCell) budgetFooterCell.textContent = formatBRL(budget);
+      document.getElementById('budgetTableTotal').textContent = formatBRL(budget);
+      document.getElementById('budgetTableBadge').textContent = `Meta: ${formatBRL(budget)}`;
 
       // Histórico público
       const histListEl = document.getElementById('publicHistoryList');
@@ -1280,39 +1275,222 @@
         `).join('');
       }
 
-      // Preencher inputs do painel Admin
-      document.getElementById('editFase2A').value = c.fase2A;
-      document.getElementById('editFase2B').value = c.fase2B;
-      document.getElementById('editPendentes2B').value = c.pendentes2B;
-      document.getElementById('editFase2C').value = c.fase2C;
-      document.getElementById('editPendente2C').value = c.pendente2C;
-      document.getElementById('editDoacoes').value = c.doacoes;
-
-      const btn2C = document.getElementById('btnQuick2C');
-      const btn2B1 = document.getElementById('btnQuick2BChild1');
-      const btn2B2 = document.getElementById('btnQuick2BChild2');
-      const btn2B3 = document.getElementById('btnQuick2BChild3');
-      if (btn2C) btn2C.disabled = pend2C <= 0;
-      if (btn2B1) btn2B1.disabled = pend2BCount < 1;
-      if (btn2B2) btn2B2.disabled = pend2BCount < 2;
-      if (btn2B3) btn2B3.disabled = pend2BCount < 3;
-
-      // Checklist Fornecedores no Admin
-      document.getElementById('supplierChecklist').innerHTML = appState.suppliers
-        .filter(s => !s.isDonation)
-        .map(s => `
-          <label class="flex items-center justify-between gap-2 p-2.5 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer">
-            <div class="flex items-center gap-2.5 min-w-0">
-              <input type="checkbox" ${s.paid ? 'checked' : ''} onchange="toggleSupplierPaid('${s.id}')" class="w-4 h-4 rounded text-navy-900 focus:ring-navy-700">
-              <span class="font-medium text-slate-800 truncate">${s.item}</span>
-            </div>
-            <span class="text-xs font-bold text-navy-900 shrink-0">${formatBRL(s.value)}</span>
-          </label>
-        `).join('');
-
+      renderAdminEditors();
       renderStudents();
     }
 
+    function renderAdminEditors() {
+      // 1. Editor de Entradas de Caixa Individualizadas
+      const cashListEl = document.getElementById('adminCashSourcesList');
+      if (cashListEl) {
+        cashListEl.innerHTML = appState.cashEntries.map((entry, idx) => `
+          <div class="bg-slate-50 border border-slate-200 rounded-xl p-3.5 space-y-2">
+            <div class="flex items-center justify-between gap-2">
+              <input type="text" data-cash-orig="${idx}" value="${entry.origem.replace(/"/g, '&quot;')}" class="font-bold text-xs sm:text-sm text-navy-900 bg-white border border-slate-300 rounded-lg px-2.5 py-1 flex-1">
+              ${!entry.fixed ? `<button type="button" onclick="removeCashEntry(${idx})" class="text-xs text-red-600 hover:bg-red-50 px-2 py-1 rounded-lg font-semibold" title="Remover lançamento">Excluir</button>` : ''}
+            </div>
+            <div class="grid grid-cols-12 gap-2">
+              <div class="col-span-5">
+                <label class="block text-[11px] text-slate-500">Valor Recebido (R$)</label>
+                <input type="number" step="0.01" data-cash-val="${idx}" value="${entry.valor}" class="w-full font-bold text-sm text-emerald-700 bg-white border border-slate-300 rounded-lg px-2.5 py-1.5">
+              </div>
+              <div class="col-span-7">
+                <label class="block text-[11px] text-slate-500">Observação / Detalhe</label>
+                <input type="text" data-cash-note="${idx}" value="${(entry.nota || '').replace(/"/g, '&quot;')}" class="w-full text-xs text-slate-700 bg-white border border-slate-300 rounded-lg px-2.5 py-1.5">
+              </div>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      const p2bEl = document.getElementById('editPendentes2B');
+      const p2cEl = document.getElementById('editPendente2C');
+      if (p2bEl) p2bEl.value = appState.pendentes2B;
+      if (p2cEl) p2cEl.value = appState.pendente2C;
+
+      // 2. Editor de Itens do Orçamento, Produção e Prazo de Entrega
+      const supEditorEl = document.getElementById('adminSuppliersEditor');
+      if (supEditorEl) {
+        const statusOptions = [
+          'Orçado / Aguardando Compra',
+          'Sinal Pago / Em Produção',
+          'Comprado / Aguardando Entrega',
+          'Em Produção',
+          'Pago / Concluído'
+        ];
+
+        supEditorEl.innerHTML = appState.suppliers.map((s, idx) => {
+          if (s.isDonation) {
+            return `
+              <div class="bg-emerald-50/60 border border-emerald-200 rounded-xl p-3.5 flex flex-wrap items-center justify-between gap-2 text-xs">
+                <div>
+                  <strong class="text-navy-900 text-sm">${s.item}</strong>
+                  <p class="text-slate-600">${s.detail}</p>
+                </div>
+                <span class="font-bold text-emerald-800 bg-white px-3 py-1 rounded-lg border border-emerald-200">100% Doado (R$ 0,00)</span>
+              </div>
+            `;
+          }
+
+          const currentStatus = s.statusLabel || 'Orçado / Aguardando Compra';
+          const optionsHtml = statusOptions.map(opt =>
+            `<option value="${opt}" ${currentStatus === opt ? 'selected' : ''}>${opt}</option>`
+          ).join('');
+
+          return `
+            <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-3">
+              <div class="flex flex-wrap items-center justify-between gap-2">
+                <span class="text-xs font-bold uppercase tracking-wider text-navy-700">Item #${idx + 1}</span>
+                ${s.id && s.id.startsWith('extra-') ? `<button type="button" onclick="removeSupplierItem(${idx})" class="text-xs text-red-600 hover:bg-red-50 px-2.5 py-1 rounded-lg font-semibold">Remover Item</button>` : ''}
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-12 gap-3 text-sm">
+                <div class="sm:col-span-5">
+                  <label class="block text-xs font-semibold text-slate-600 mb-1">Nome do Item</label>
+                  <input type="text" data-sup-item="${idx}" value="${s.item.replace(/"/g, '&quot;')}" class="w-full border border-slate-300 rounded-xl px-3 py-2 bg-white font-semibold text-navy-900">
+                </div>
+                <div class="sm:col-span-3">
+                  <label class="block text-xs font-semibold text-slate-600 mb-1">Valor (R$)</label>
+                  <input type="number" step="0.01" data-sup-val="${idx}" value="${s.value}" class="w-full border border-slate-300 rounded-xl px-3 py-2 bg-white font-bold text-navy-900">
+                </div>
+                <div class="sm:col-span-4">
+                  <label class="block text-xs font-semibold text-slate-600 mb-1">Status de Compra / Produção</label>
+                  <select data-sup-status="${idx}" class="w-full border border-slate-300 rounded-xl px-3 py-2 bg-white text-navy-900 font-medium">
+                    ${optionsHtml}
+                  </select>
+                </div>
+                <div class="sm:col-span-6">
+                  <label class="block text-xs font-semibold text-slate-600 mb-1">Detalhamento & Data de Compra / Produção</label>
+                  <input type="text" data-sup-detail="${idx}" value="${(s.detail || '').replace(/"/g, '&quot;')}" placeholder="Ex.: Pedido feito em 20/11" class="w-full border border-slate-300 rounded-xl px-3 py-2 bg-white text-slate-700">
+                </div>
+                <div class="sm:col-span-6">
+                  <label class="block text-xs font-semibold text-slate-600 mb-1">Observação / Prazo de Entrega</label>
+                  <input type="text" data-sup-delivery="${idx}" value="${(s.deliveryNote || '').replace(/"/g, '&quot;')}" placeholder="Ex.: Entrega prevista até 05/12" class="w-full border border-slate-300 rounded-xl px-3 py-2 bg-white text-navy-900">
+                </div>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+    }
+
+    // --- AÇÕES DO CAIXA INDIVIDUALIZADO ---
+    window.addIndividualCashEntry = function() {
+      if (!isAdmin) return;
+      const origem = (document.getElementById('newCashOrigin').value || '').trim();
+      const valor = parseFloat(document.getElementById('newCashAmount').value);
+      const nota = (document.getElementById('newCashNote').value || '').trim() || 'Recebimento registrado';
+
+      if (!origem || isNaN(valor) || valor <= 0) {
+        showToast('Informe a origem/pagador e um valor válido maior que zero.');
+        return;
+      }
+
+      appState.cashEntries.push({
+        id: 'entry-' + Date.now(),
+        origem: origem,
+        nota: nota,
+        valor: Number(valor.toFixed(2)),
+        fixed: false
+      });
+
+      document.getElementById('newCashOrigin').value = '';
+      document.getElementById('newCashAmount').value = '';
+      document.getElementById('newCashNote').value = '';
+
+      persistState(`Nova entrada registrada: ${origem} (+ ${formatBRL(valor)}).`);
+    };
+
+    window.removeCashEntry = function(idx) {
+      if (!isAdmin) return;
+      const removed = appState.cashEntries[idx];
+      if (!removed || removed.fixed) return;
+      if (!confirm(`Remover o lançamento "${removed.origem}" (${formatBRL(removed.valor)})?`)) return;
+      appState.cashEntries.splice(idx, 1);
+      persistState(`Lançamento removido: ${removed.origem}.`);
+    };
+
+    window.saveAllCashChanges = function() {
+      if (!isAdmin) return;
+      appState.cashEntries.forEach((entry, idx) => {
+        const origInput = document.querySelector(`[data-cash-orig="${idx}"]`);
+        const valInput = document.querySelector(`[data-cash-val="${idx}"]`);
+        const noteInput = document.querySelector(`[data-cash-note="${idx}"]`);
+        if (origInput) entry.origem = origInput.value.trim() || entry.origem;
+        if (valInput) entry.valor = Number((parseFloat(valInput.value) || 0).toFixed(2));
+        if (noteInput) entry.nota = noteInput.value.trim();
+      });
+
+      appState.pendentes2B = Math.max(0, parseInt(document.getElementById('editPendentes2B').value, 10) || 0);
+      appState.pendente2C = Math.max(0, Number((parseFloat(document.getElementById('editPendente2C').value) || 0).toFixed(2)));
+
+      persistState('Valores de entrada em caixa e pendências atualizados pela administração.');
+    };
+
+    // --- AÇÕES DE ORÇAMENTO, PRODUÇÃO E PRAZO DE ENTREGA ---
+    window.saveAllSuppliers = function() {
+      if (!isAdmin) return;
+      appState.suppliers.forEach((s, idx) => {
+        if (s.isDonation) return;
+        const itemIn = document.querySelector(`[data-sup-item="${idx}"]`);
+        const valIn = document.querySelector(`[data-sup-val="${idx}"]`);
+        const statusIn = document.querySelector(`[data-sup-status="${idx}"]`);
+        const detailIn = document.querySelector(`[data-sup-detail="${idx}"]`);
+        const deliveryIn = document.querySelector(`[data-sup-delivery="${idx}"]`);
+
+        if (itemIn) s.item = itemIn.value.trim() || s.item;
+        if (valIn) s.value = Number((parseFloat(valIn.value) || 0).toFixed(2));
+        if (statusIn) {
+          s.statusLabel = statusIn.value;
+          s.paid = statusIn.value === 'Pago / Concluído';
+        }
+        if (detailIn) s.detail = detailIn.value.trim();
+        if (deliveryIn) s.deliveryNote = deliveryIn.value.trim();
+      });
+
+      persistState('Status de compra, datas de produção e prazos de entrega atualizados.');
+    };
+
+    window.addNewBudgetItem = function() {
+      if (!isAdmin) return;
+      const item = (document.getElementById('newExpItem').value || '').trim();
+      const val = parseFloat(document.getElementById('newExpVal').value);
+      const status = document.getElementById('newExpStatus').value;
+      const detail = (document.getElementById('newExpDetail').value || '').trim() || 'Item adicionado pela comissão';
+      const delivery = (document.getElementById('newExpDelivery').value || '').trim();
+
+      if (!item || isNaN(val) || val < 0) {
+        showToast('Preencha o nome do item e um valor válido.');
+        return;
+      }
+
+      appState.suppliers.push({
+        id: 'extra-' + Date.now(),
+        item: item,
+        detail: detail,
+        deliveryNote: delivery,
+        value: Number(val.toFixed(2)),
+        statusLabel: status,
+        paid: status === 'Pago / Concluído'
+      });
+
+      document.getElementById('newExpItem').value = '';
+      document.getElementById('newExpVal').value = '';
+      document.getElementById('newExpDetail').value = '';
+      document.getElementById('newExpDelivery').value = '';
+
+      persistState(`Novo item adicionado ao orçamento: ${item} (${formatBRL(val)}).`);
+    };
+
+    window.removeSupplierItem = function(idx) {
+      if (!isAdmin) return;
+      const rem = appState.suppliers[idx];
+      if (!rem) return;
+      if (!confirm(`Remover o item "${rem.item}" do orçamento?`)) return;
+      appState.suppliers.splice(idx, 1);
+      persistState(`Item removido do orçamento: ${rem.item}.`);
+    };
+
+    // --- LISTA DE FORMANDOS & PRESENÇA NO PASSEIO (SALVO NA NUVEM) ---
     window.renderStudents = function() {
       const search = (document.getElementById('studentSearch').value || '').toLowerCase().trim();
       const classes = [
@@ -1323,10 +1501,16 @@
 
       const markedTripCount = appState.students.filter(st => st.passeio).length;
       document.getElementById('adminTripCounter').textContent = `${markedTripCount} / 40 marcados`;
-      document.getElementById('tripCountSummary').textContent =
-        markedTripCount > 0
-          ? `${markedTripCount} de 40 vagas marcadas no passeio`
-          : `40 vagas confirmadas no passeio`;
+      const summaryText = markedTripCount > 0
+        ? `${markedTripCount} de 40 crianças confirmadas no passeio`
+        : `40 vagas disponíveis para o passeio`;
+      document.getElementById('tripCountSummary').textContent = summaryText;
+      const kpiTripCard = document.getElementById('kpiTripCountCard');
+      if (kpiTripCard) {
+        kpiTripCard.textContent = markedTripCount > 0
+          ? `${markedTripCount}/40 no passeio + 6 adultos`
+          : `40 vagas no passeio + 6 adultos equipe`;
+      }
 
       const filteredClasses = currentClassFilter === 'ALL'
         ? classes
@@ -1356,7 +1540,7 @@
               ${list.length === 0 ? `<li class="p-4 text-xs text-slate-400 text-center">Nenhum aluno encontrado na busca.</li>` : ''}
               ${list.map((st, idx) => {
                 const tripBadge = isAdmin
-                  ? `<button onclick="toggleStudentTrip('${st.id}')" class="text-[11px] font-bold px-2 py-0.5 rounded-md border transition ${st.passeio ? 'bg-emerald-100 text-emerald-800 border-emerald-300' : 'bg-slate-100 text-slate-500 border-slate-200 hover:bg-slate-200'}">
+                  ? `<button type="button" onclick="toggleStudentTrip('${st.id}')" class="text-[11px] font-bold px-2.5 py-1 rounded-lg border transition cursor-pointer ${st.passeio ? 'bg-emerald-100 text-emerald-800 border-emerald-300' : 'bg-slate-100 text-slate-600 border-slate-200 hover:bg-slate-200'}">
                       ${st.passeio ? '🚌 Vai ao Passeio' : '+ Marcar Passeio'}
                     </button>`
                   : (st.passeio ? `<span class="text-[11px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded-md">🚌 Passeio</span>` : '');
@@ -1377,6 +1561,28 @@
       }).join('');
     };
 
+    window.toggleStudentTrip = function(id) {
+      if (!isAdmin) return;
+      const st = appState.students.find(s => s.id === id);
+      if (st) {
+        st.passeio = !st.passeio;
+        const totalMarked = appState.students.filter(x => x.passeio).length;
+        persistState(
+          null,
+          `${st.nome}: ${st.passeio ? 'Confirmado(a) no passeio' : 'Removido(a) do passeio'} (${totalMarked}/40 salvos na nuvem).`
+        );
+      }
+    };
+
+    window.forceSaveStudentsTrip = function() {
+      if (!isAdmin) return;
+      const totalMarked = appState.students.filter(x => x.passeio).length;
+      persistState(
+        `Lista de presença no passeio atualizada (${totalMarked} de 40 crianças confirmadas).`,
+        `Lista salva na nuvem com ${totalMarked} crianças confirmadas!`
+      );
+    };
+
     window.setClassFilter = function(code) {
       currentClassFilter = code;
       document.querySelectorAll('.filter-btn').forEach(btn => {
@@ -1391,7 +1597,7 @@
       renderStudents();
     };
 
-    // --- FUNÇÕES DO MODO ADMINISTRADORA ---
+    // --- LOGIN & ADMIN ---
     window.openAdminModal = function() {
       if (isAdmin) {
         document.getElementById('secretCommissionPanel').scrollIntoView({ behavior: 'smooth' });
@@ -1416,7 +1622,7 @@
         isAdmin = true;
         closeAdminModal();
         updateAdminUI();
-        showToast('Bem-vinda! Modo Administradora desbloqueado.');
+        showToast('Modo Administradora desbloqueado!');
       } else {
         document.getElementById('loginErrorMsg').classList.remove('hidden');
       }
@@ -1445,89 +1651,16 @@
         studentHint.classList.add('hidden');
         btnLabel.textContent = 'Área Restrita';
       }
-      renderStudents();
+      renderAll();
     }
-
-    window.saveAdminFinancials = function() {
-      if (!isAdmin) return;
-      appState.cash.fase2A = parseFloat(document.getElementById('editFase2A').value) || 0;
-      appState.cash.fase2B = parseFloat(document.getElementById('editFase2B').value) || 0;
-      appState.cash.pendentes2B = parseInt(document.getElementById('editPendentes2B').value, 10) || 0;
-      appState.cash.fase2C = parseFloat(document.getElementById('editFase2C').value) || 0;
-      appState.cash.pendente2C = parseFloat(document.getElementById('editPendente2C').value) || 0;
-      appState.cash.doacoes = parseFloat(document.getElementById('editDoacoes').value) || 0;
-      persistState('Saldos de arrecadação atualizados pela administração.');
-    };
-
-    window.quickConfirm2C = function() {
-      if (!isAdmin || Number(appState.cash.pendente2C) <= 0) return;
-      const val = Number(appState.cash.pendente2C);
-      appState.cash.fase2C = Number((Number(appState.cash.fase2C) + val).toFixed(2));
-      appState.cash.pendente2C = 0;
-      persistState(`Quitada pendência da Fase 2C (+ ${formatBRL(val)}).`);
-    };
-
-    window.quickConfirm2BChildren = function(qtd) {
-      if (!isAdmin || Number(appState.cash.pendentes2B) < qtd) return;
-      const added = qtd * 146.00;
-      appState.cash.pendentes2B = Math.max(0, Number(appState.cash.pendentes2B) - qtd);
-      appState.cash.fase2B = Number((Number(appState.cash.fase2B) + added).toFixed(2));
-      persistState(`Registrado pagamento de ${qtd} criança(s) da Fase 2B (+ ${formatBRL(added)}).`);
-    };
-
-    window.addNewExpenseItem = function() {
-      if (!isAdmin) return;
-      const title = (document.getElementById('newItemTitle').value || '').trim();
-      const detail = (document.getElementById('newItemDetail').value || '').trim() || 'Item complementar lançado pela administração';
-      const val = parseFloat(document.getElementById('newItemValue').value);
-      const paid = document.getElementById('newItemPaid').checked;
-
-      if (!title || isNaN(val) || val <= 0) {
-        showToast('Informe a descrição e um valor válido maior que zero.');
-        return;
-      }
-
-      appState.suppliers.push({
-        id: 'extra-' + Date.now(),
-        item: title,
-        detail: detail,
-        value: Number(val.toFixed(2)),
-        paid: paid,
-        statusLabel: paid ? 'Compra Realizada / Pago' : 'Orçado / Reservado'
-      });
-
-      document.getElementById('newItemTitle').value = '';
-      document.getElementById('newItemDetail').value = '';
-      document.getElementById('newItemValue').value = '';
-
-      persistState(`Adicionado item ao orçamento: ${title} (${formatBRL(val)}).`);
-    };
-
-    window.toggleSupplierPaid = function(id) {
-      if (!isAdmin) return;
-      const item = appState.suppliers.find(s => s.id === id);
-      if (item) {
-        item.paid = !item.paid;
-        item.statusLabel = item.paid ? 'Compra Realizada / Pago' : 'Orçado / Reservado';
-        persistState(`Status atualizado: "${item.item}" marcado como ${item.paid ? 'Pago' : 'Orçado'}.`);
-      }
-    };
-
-    window.toggleStudentTrip = function(id) {
-      if (!isAdmin) return;
-      const st = appState.students.find(s => s.id === id);
-      if (st) {
-        st.passeio = !st.passeio;
-        persistState(`Presença no passeio atualizada para ${st.nome}.`);
-      }
-    };
 
     window.resetDefaultData = function() {
       if (!isAdmin) return;
+      if (!confirm('Restaurar todos os valores e status para a base oficial?')) return;
       const currentPass = appState.adminPassword;
       appState = JSON.parse(JSON.stringify(DEFAULT_STATE));
       appState.adminPassword = currentPass;
-      persistState('Valores restaurados para o padrão oficial.');
+      persistState('Valores restaurados para a base oficial.');
     };
 
     window.openPasswordChangeModal = function() {
@@ -1546,13 +1679,11 @@
       if (np.length >= 4) {
         appState.adminPassword = np;
         closePasswordChangeModal();
-        persistState();
-        showToast('Nova senha da administração salva na nuvem!');
+        persistState(null, 'Nova senha da administração salva na nuvem!');
       }
     };
 
-    // Inicializar UI e conectar ao Firebase Realtime Database
-    injectExtraAdminControls();
+    // Inicializar
     renderAll();
     initFirebaseRealtime();
   </script>
