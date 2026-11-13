@@ -1,1 +1,458 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portal da Formatura 2026 - E.M. Benedita Salinas dos Santos</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Firebase SDK (Compat) -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+    body { font-family: 'Inter', sans-serif; background-color: #f8fafc; color: #0f172a; }
+    .card-shadow { box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.06); }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
 
+  <!-- Cabeçalho -->
+  <header class="bg-[#0f294a] text-white shadow-lg sticky top-0 z-40">
+    <div class="max-w-6xl mx-auto px-4 py-4 flex flex-wrap items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <div class="bg-amber-400 text-[#0f294a] p-2.5 rounded-xl font-extrabold shadow">
+          <i data-lucide="graduation-cap" class="w-6 h-6"></i>
+        </div>
+        <div>
+          <span class="text-xs uppercase tracking-wider text-amber-300 font-semibold block">Transparência & Organização • 54 Formandos</span>
+          <h1 class="text-lg sm:text-xl font-bold leading-tight">Formatura 2026 — E.M. Benedita Salinas dos Santos</h1>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <span id="syncStatus" class="hidden sm:inline-flex items-center gap-1.5 text-xs bg-emerald-500/20 text-emerald-200 border border-emerald-400/30 px-3 py-1.5 rounded-full">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> Conectado em tempo real
+        </span>
+        <button id="btnOpenAdmin" onclick="openAdminModal()" class="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white text-sm font-semibold px-4 py-2 rounded-xl border border-white/15 transition">
+          <i data-lucide="lock" class="w-4 h-4 text-amber-300"></i>
+          <span id="adminBtnLabel">Área Restrita</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Conteúdo Principal -->
+  <main class="max-w-6xl mx-auto w-full px-4 py-6 sm:py-8 space-y-8 flex-1">
+
+    <!-- Banner de Situação Financeira -->
+    <section class="bg-gradient-to-r from-emerald-600 to-teal-700 rounded-2xl p-6 text-white shadow-md">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div class="space-y-1">
+          <div class="inline-flex items-center gap-2 bg-white/15 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wide">
+            <i data-lucide="check-circle-2" class="w-4 h-4"></i> Meta Financeira 100% Coberta
+          </div>
+          <h2 class="text-xl sm:text-2xl font-bold">Não será necessário pedir novas doações aos pais!</h2>
+          <p class="text-emerald-50 text-sm sm:text-base max-w-2xl">
+            A diferença atual de <strong id="bannerDiff">R$ 400,04</strong> já está totalmente mapeada e garantida pelos pagamentos pendentes da <strong>Fase 2C (R$ 50,00)</strong> e <strong>Fase 2B (até 3 parcelas de R$ 146,00)</strong>, gerando inclusive saldo positivo em caixa após a quitação.
+          </p>
+        </div>
+        <div class="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20 min-w-[210px] text-center">
+          <span class="text-xs uppercase tracking-wider text-emerald-100 block">Progresso Arrecadado</span>
+          <span id="progressPercent" class="text-3xl font-extrabold">95,6%</span>
+          <div class="w-full bg-black/20 h-2.5 rounded-full mt-2 overflow-hidden">
+            <div id="progressBar" class="bg-amber-300 h-full rounded-full transition-all duration-500" style="width: 95.57%"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Cards de Resumo Financeiro -->
+    <section class="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
+      <div class="bg-white rounded-2xl p-6 border border-slate-200/80 card-shadow">
+        <div class="flex items-center justify-between text-slate-500 mb-2">
+          <span class="text-sm font-semibold">Orçamento Total Previsto</span>
+          <i data-lucide="calculator" class="w-5 h-5 text-blue-600"></i>
+        </div>
+        <div id="cardTotalBudget" class="text-2xl sm:text-3xl font-extrabold text-slate-900">R$ 9.029,08</div>
+        <p class="text-xs text-slate-500 mt-1">Cobertura completa para os 54 formandos</p>
+      </div>
+
+      <div class="bg-white rounded-2xl p-6 border border-emerald-200 card-shadow">
+        <div class="flex items-center justify-between text-emerald-700 mb-2">
+          <span class="text-sm font-semibold">Saldo Atual em Caixa</span>
+          <i data-lucide="wallet" class="w-5 h-5 text-emerald-600"></i>
+        </div>
+        <div id="cardCashInHand" class="text-2xl sm:text-3xl font-extrabold text-emerald-700">R$ 8.629,04</div>
+        <p class="text-xs text-slate-500 mt-1">Valor já arrecadado e disponível</p>
+      </div>
+
+      <div class="bg-white rounded-2xl p-6 border border-amber-200 card-shadow">
+        <div class="flex items-center justify-between text-amber-700 mb-2">
+          <span class="text-sm font-semibold">Diferença a Receber</span>
+          <i data-lucide="clock" class="w-5 h-5 text-amber-600"></i>
+        </div>
+        <div id="cardRemaining" class="text-2xl sm:text-3xl font-extrabold text-amber-600">R$ 400,04</div>
+        <p id="cardRemainingNote" class="text-xs text-slate-500 mt-1">100% coberta pelos pendentes Fase 2B e 2C</p>
+      </div>
+    </section>
+
+    <!-- PAINEL ADMINISTRATIVO (Visível apenas após login com senha) -->
+    <section id="adminPanel" class="hidden bg-slate-900 text-white rounded-2xl p-6 sm:p-8 shadow-xl border border-slate-700 space-y-6">
+      <div class="flex flex-wrap items-center justify-between gap-4 border-b border-slate-700 pb-4">
+        <div class="flex items-center gap-3">
+          <div class="bg-amber-400 text-slate-900 p-2 rounded-lg">
+            <i data-lucide="shield-check" class="w-6 h-6"></i>
+          </div>
+          <div>
+            <h3 class="text-lg font-bold">Painel Administrativo da Comissão</h3>
+            <p class="text-xs text-slate-400">Toda alteração salva aqui atualiza automaticamente no celular de todos os pais.</p>
+          </div>
+        </div>
+        <button onclick="logoutAdmin()" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-3 py-2 rounded-lg border border-slate-600">
+          Sair do Modo Admin
+        </button>
+      </div>
+
+      <!-- Lançamentos Rápidos -->
+      <div class="space-y-3">
+        <h4 class="text-sm font-semibold text-amber-300 uppercase tracking-wider">1. Lançamento Rápido de Recebimentos Pendentes</h4>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+          <button onclick="addTransaction('Recebimento Pendente Fase 2C', 50.00, 'entrada')" class="bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-3 px-4 rounded-xl text-sm flex items-center justify-center gap-2 transition">
+            <i data-lucide="plus-circle" class="w-4 h-4"></i> + R$ 50,00 (Fase 2C)
+          </button>
+          <button onclick="addTransaction('Recebimento Parcela Fase 2B', 146.00, 'entrada')" class="bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-3 px-4 rounded-xl text-sm flex items-center justify-center gap-2 transition">
+            <i data-lucide="plus-circle" class="w-4 h-4"></i> + R$ 146,00 (Fase 2B)
+          </button>
+          <button onclick="resetToOfficial()" class="bg-slate-700 hover:bg-slate-600 text-slate-200 font-semibold py-3 px-4 rounded-xl text-sm flex items-center justify-center gap-2 transition">
+            <i data-lucide="rotate-ccw" class="w-4 h-4"></i> Restaurar Valores Base
+          </button>
+        </div>
+      </div>
+
+      <!-- Lançamento Personalizado / Compras / Acréscimos -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 pt-2">
+        <form onsubmit="handleCustomEntry(event)" class="bg-slate-800/80 p-5 rounded-xl border border-slate-700 space-y-4">
+          <h4 class="text-sm font-semibold text-sky-300 uppercase tracking-wider">2. Registrar Nova Entrada ou Compra/Despesa</h4>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs text-slate-400 mb-1">Tipo de Movimentação</label>
+              <select id="entryType" class="w-full bg-slate-900 border border-slate-600 rounded-lg px-3 py-2 text-sm text-white">
+                <option value="entrada">Entrada (+ Caixa)</option>
+                <option value="despesa">Nova Compra / Acréscimo (+ Orçamento)</option>
+                <option value="saida_caixa">Pagamento Efetuado (- Caixa)</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs text-slate-400 mb-1">Valor (R$)</label>
+              <input id="entryAmount" type="number" step="0.01" min="0.01" required placeholder="Ex: 146.00" class="w-full bg-slate-900 border border-slate-600 rounded-lg px-3 py-2 text-sm text-white" />
+            </div>
+          </div>
+          <div>
+            <label class="block text-xs text-slate-400 mb-1">Descrição / Motivo</label>
+            <input id="entryDesc" type="text" required placeholder="Ex: Pagamento aluno João - Fase 2B" class="w-full bg-slate-900 border border-slate-600 rounded-lg px-3 py-2 text-sm text-white" />
+          </div>
+          <button type="submit" class="w-full bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold py-2.5 rounded-xl text-sm transition">
+            Salvar e Atualizar Portal
+          </button>
+        </form>
+
+        <!-- Alterar Senha -->
+        <form onsubmit="handleChangePassword(event)" class="bg-slate-800/80 p-5 rounded-xl border border-slate-700 space-y-4">
+          <h4 class="text-sm font-semibold text-amber-300 uppercase tracking-wider">3. Alterar Senha da Comissão</h4>
+          <p class="text-xs text-slate-400">A nova senha fica salva na nuvem do Firebase e passa a valer imediatamente em qualquer aparelho.</p>
+          <div>
+            <label class="block text-xs text-slate-400 mb-1">Nova Senha Administrativa</label>
+            <input id="newAdminPassword" type="password" required minlength="4" placeholder="Digite a nova senha secreta" class="w-full bg-slate-900 border border-slate-600 rounded-lg px-3 py-2 text-sm text-white" />
+          </div>
+          <button type="submit" class="w-full bg-slate-700 hover:bg-slate-600 text-white font-semibold py-2.5 rounded-xl text-sm border border-slate-600 transition">
+            Atualizar Senha de Acesso
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <!-- Detalhamento das Pendências Mapeadas & Histórico -->
+    <section class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div class="bg-white rounded-2xl p-6 border border-slate-200/80 card-shadow space-y-4">
+        <div class="flex items-center gap-2.5">
+          <div class="bg-blue-100 text-blue-700 p-2 rounded-lg">
+            <i data-lucide="list-checks" class="w-5 h-5"></i>
+          </div>
+          <h3 class="text-lg font-bold text-slate-900">Pendências Já Mapeadas</h3>
+        </div>
+        <div class="space-y-3 text-sm">
+          <div class="flex items-center justify-between p-3.5 rounded-xl bg-slate-50 border border-slate-200/70">
+            <div>
+              <p class="font-semibold text-slate-800">Fase 2C — Saldo Pendente</p>
+              <p class="text-xs text-slate-500">Valor comprometido aguardando compensação</p>
+            </div>
+            <span class="font-bold text-emerald-700 bg-emerald-50 px-3 py-1 rounded-lg border border-emerald-200">R$ 50,00</span>
+          </div>
+          <div class="flex items-center justify-between p-3.5 rounded-xl bg-slate-50 border border-slate-200/70">
+            <div>
+              <p class="font-semibold text-slate-800">Fase 2B — Até 3 Parcelas Pendentes</p>
+              <p class="text-xs text-slate-500">3 × R$ 146,00 = R$ 438,00 previstos</p>
+            </div>
+            <span class="font-bold text-emerald-700 bg-emerald-50 px-3 py-1 rounded-lg border border-emerald-200">R$ 438,00</span>
+          </div>
+          <div class="p-3.5 rounded-xl bg-blue-50/70 border border-blue-200/70 text-xs text-blue-900">
+            <strong>Resumo:</strong> Total mapeado a receber = <strong>R$ 488,00</strong>. Como faltam apenas <strong>R$ 400,04</strong> para fechar o orçamento de R$ 9.029,08, a formatura fechará com superávit previsto de <strong>R$ 87,96</strong>.
+          </div>
+        </div>
+      </div>
+
+      <!-- Histórico de Movimentações -->
+      <div class="bg-white rounded-2xl p-6 border border-slate-200/80 card-shadow space-y-4">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2.5">
+            <div class="bg-amber-100 text-amber-700 p-2 rounded-lg">
+              <i data-lucide="history" class="w-5 h-5"></i>
+            </div>
+            <h3 class="text-lg font-bold text-slate-900">Últimas Atualizações do Caixa</h3>
+          </div>
+        </div>
+        <div id="historyList" class="space-y-2.5 max-h-64 overflow-y-auto pr-1 text-sm">
+          <p class="text-slate-400 text-xs italic">Carregando registros...</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Informações Gerais da Formatura (Trajes & Roteiro) -->
+    <section class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="bg-white rounded-2xl p-6 border border-slate-200/80 card-shadow space-y-3">
+        <div class="flex items-center gap-2.5">
+          <div class="bg-purple-100 text-purple-700 p-2 rounded-lg">
+            <i data-lucide="shirt" class="w-5 h-5"></i>
+          </div>
+          <h3 class="text-lg font-bold text-slate-900">Trajes Oficiais dos Formandos</h3>
+        </div>
+        <ul class="space-y-2 text-sm text-slate-600">
+          <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-600 mt-0.5 shrink-0"></i> <span><strong>Cerimônia Solene:</strong> Beca tradicional completa (fornecida pela comissão) com traje social leve por baixo.</span></li>
+          <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-600 mt-0.5 shrink-0"></i> <span><strong>Passeio de Confraternização:</strong> Camiseta personalizada da turma 2026 + calçado confortável.</span></li>
+        </ul>
+      </div>
+
+      <div class="bg-white rounded-2xl p-6 border border-slate-200/80 card-shadow space-y-3">
+        <div class="flex items-center gap-2.5">
+          <div class="bg-teal-100 text-teal-700 p-2 rounded-lg">
+            <i data-lucide="map-pin" class="w-5 h-5"></i>
+          </div>
+          <h3 class="text-lg font-bold text-slate-900">Roteiro & Programação (54 Alunos)</h3>
+        </div>
+        <ul class="space-y-2 text-sm text-slate-600">
+          <li class="flex items-start gap-2"><i data-lucide="calendar" class="w-4 h-4 text-teal-600 mt-0.5 shrink-0"></i> <span><strong>Transporte & Alimentação:</strong> Inclusos no orçamento total de R$ 9.029,08 para todos os 54 formandos.</span></li>
+          <li class="flex items-start gap-2"><i data-lucide="info" class="w-4 h-4 text-teal-600 mt-0.5 shrink-0"></i> <span><strong>Atualizações em Tempo Real:</strong> Qualquer novo pagamento compensado é lançado pela comissão e refletido imediatamente nesta página.</span></li>
+        </ul>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Rodapé -->
+  <footer class="bg-white border-t border-slate-200 py-5 px-4 text-center text-xs text-slate-500">
+    Comissão de Formatura 2026 — E.M. Benedita Salinas dos Santos • Portal de Transparência Financeira
+  </footer>
+
+  <!-- Modal de Login Administrativo (Sem dicas visuais de senha) -->
+  <div id="adminModal" class="hidden fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-5">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="bg-[#0f294a] text-amber-400 p-2.5 rounded-xl">
+            <i data-lucide="lock" class="w-5 h-5"></i>
+          </div>
+          <h3 class="text-lg font-bold text-slate-900">Área Restrita da Comissão</h3>
+        </div>
+        <button onclick="closeAdminModal()" class="text-slate-400 hover:text-slate-600 p-1">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <p class="text-sm text-slate-600">
+        Acesso exclusivo para gestão financeira e administrativa da comissão de formatura.
+      </p>
+
+      <form onsubmit="verifyAdminLogin(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1.5">Senha de Acesso</label>
+          <input id="adminPasswordInput" type="password" required placeholder="Digite a senha..." class="w-full border-2 border-slate-300 focus:border-[#0f294a] rounded-xl px-4 py-2.5 text-sm outline-none transition" />
+        </div>
+        <p id="loginErrorMsg" class="hidden text-xs text-red-600 font-semibold">Senha incorreta. Acesso negado.</p>
+        <div class="flex items-center justify-end gap-2 pt-2">
+          <button type="button" onclick="closeAdminModal()" class="px-4 py-2.5 text-sm font-semibold text-slate-600 hover:bg-slate-100 rounded-xl transition">
+            Cancelar
+          </button>
+          <button type="submit" class="bg-[#0f294a] hover:bg-slate-800 text-white text-sm font-bold px-5 py-2.5 rounded-xl transition">
+            Entrar como Admin
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // Configuração do Firebase Realtime Database
+    const firebaseConfig = {
+      apiKey: "AIzaSyAT1KSIxhku9IT1CcJ6V93AqrYtXoJX_rQ",
+      authDomain: "formatura-benedita-2026.firebaseapp.com",
+      databaseURL: "https://formatura-benedita-2026-default-rtdb.firebaseio.com",
+      projectId: "formatura-benedita-2026",
+      storageBucket: "formatura-benedita-2026.firebasestorage.app",
+      messagingSenderId: "378030992923",
+      appId: "1:378030992923:web:177b49044c8bb55c4cd2be"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+    const stateRef = db.ref('formatura2026');
+
+    const DEFAULT_STATE = {
+      totalBudget: 9029.08,
+      cashInHand: 8629.04,
+      adminPass: "benedita2026",
+      history: [
+        { date: "Base Oficial", desc: "Saldo consolidado em caixa (54 formandos)", amount: 8629.04, type: "entrada" }
+      ]
+    };
+
+    let currentState = { ...DEFAULT_STATE };
+    let isAdmin = false;
+
+    function formatBRL(val) {
+      return Number(val || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    }
+
+    function renderUI() {
+      const budget = Number(currentState.totalBudget) || 9029.08;
+      const cash = Number(currentState.cashInHand) || 0;
+      const diff = Math.max(0, budget - cash);
+      const surplus = cash > budget ? cash - budget : 0;
+      const pct = budget > 0 ? Math.min(100, (cash / budget) * 100) : 0;
+
+      document.getElementById('cardTotalBudget').textContent = formatBRL(budget);
+      document.getElementById('cardCashInHand').textContent = formatBRL(cash);
+      document.getElementById('cardRemaining').textContent = surplus > 0 ? `+ ${formatBRL(surplus)}` : formatBRL(diff);
+      document.getElementById('bannerDiff').textContent = formatBRL(diff);
+      document.getElementById('progressPercent').textContent = pct.toFixed(1).replace('.', ',') + '%';
+      document.getElementById('progressBar').style.width = pct + '%';
+
+      if (surplus > 0) {
+        document.getElementById('cardRemainingNote').textContent = 'Meta superada! Saldo positivo em caixa.';
+      } else {
+        document.getElementById('cardRemainingNote').textContent = '100% coberta pelos pendentes Fase 2B e 2C';
+      }
+
+      const historyEl = document.getElementById('historyList');
+      const items = Array.isArray(currentState.history) ? currentState.history : [];
+      if (items.length === 0) {
+        historyEl.innerHTML = '<p class="text-slate-400 text-xs">Nenhuma movimentação registrada.</p>';
+      } else {
+        historyEl.innerHTML = items.slice().reverse().map(item => {
+          const isPlus = item.type === 'entrada';
+          const badgeClass = isPlus ? 'text-emerald-700 bg-emerald-50' : 'text-amber-700 bg-amber-50';
+          const sign = isPlus ? '+' : '';
+          return `
+            <div class="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-100">
+              <div>
+                <p class="font-medium text-slate-800">${item.desc}</p>
+                <span class="text-[11px] text-slate-400">${item.date || ''}</span>
+              </div>
+              <span class="font-bold text-xs px-2.5 py-1 rounded-lg ${badgeClass}">${sign}${formatBRL(item.amount)}</span>
+            </div>
+          `;
+        }).join('');
+      }
+      lucide.createIcons();
+    }
+
+    // Escuta em tempo real no Firebase
+    stateRef.on('value', (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        currentState = {
+          totalBudget: data.totalBudget ?? DEFAULT_STATE.totalBudget,
+          cashInHand: data.cashInHand ?? DEFAULT_STATE.cashInHand,
+          adminPass: data.adminPass || DEFAULT_STATE.adminPass,
+          history: data.history || DEFAULT_STATE.history
+        };
+      } else {
+        stateRef.set(DEFAULT_STATE);
+      }
+      renderUI();
+    });
+
+    function openAdminModal() {
+      if (isAdmin) {
+        document.getElementById('adminPanel').scrollIntoView({ behavior: 'smooth' });
+        return;
+      }
+      document.getElementById('loginErrorMsg').classList.add('hidden');
+      document.getElementById('adminPasswordInput').value = '';
+      document.getElementById('adminModal').classList.remove('hidden');
+      setTimeout(() => document.getElementById('adminPasswordInput').focus(), 100);
+    }
+
+    function closeAdminModal() {
+      document.getElementById('adminModal').classList.add('hidden');
+    }
+
+    function verifyAdminLogin(e) {
+      e.preventDefault();
+      const typed = document.getElementById('adminPasswordInput').value;
+      const validPass = currentState.adminPass || DEFAULT_STATE.adminPass;
+      if (typed === validPass) {
+        isAdmin = true;
+        closeAdminModal();
+        document.getElementById('adminPanel').classList.remove('hidden');
+        document.getElementById('adminBtnLabel').textContent = 'Painel Ativo';
+        document.getElementById('adminPanel').scrollIntoView({ behavior: 'smooth' });
+      } else {
+        document.getElementById('loginErrorMsg').classList.remove('hidden');
+      }
+    }
+
+    function logoutAdmin() {
+      isAdmin = false;
+      document.getElementById('adminPanel').classList.add('hidden');
+      document.getElementById('adminBtnLabel').textContent = 'Área Restrita';
+    }
+
+    function addTransaction(desc, amount, type) {
+      if (!isAdmin) return;
+      const now = new Date().toLocaleDateString('pt-BR');
+      const updatedHistory = [...(currentState.history || []), { date: now, desc, amount, type }];
+      let newBudget = Number(currentState.totalBudget);
+      let newCash = Number(currentState.cashInHand);
+
+      if (type === 'entrada') newCash += amount;
+      if (type === 'despesa') newBudget += amount;
+      if (type === 'saida_caixa') newCash = Math.max(0, newCash - amount);
+
+      stateRef.update({
+        totalBudget: Number(newBudget.toFixed(2)),
+        cashInHand: Number(newCash.toFixed(2)),
+        history: updatedHistory
+      });
+    }
+
+    function handleCustomEntry(e) {
+      e.preventDefault();
+      const type = document.getElementById('entryType').value;
+      const amount = parseFloat(document.getElementById('entryAmount').value);
+      const desc = document.getElementById('entryDesc').value.trim();
+      if (!desc || isNaN(amount) || amount <= 0) return;
+
+      addTransaction(desc, amount, type);
+      document.getElementById('entryAmount').value = '';
+      document.getElementById('entryDesc').value = '';
+    }
+
+    function handleChangePassword(e) {
+      e.preventDefault();
+      if (!isAdmin) return;
+      const newPass = document.getElementById('newAdminPassword').value.trim();
+      if (newPass.length < 4) return;
+      stateRef.update({ adminPass: newPass });
+      document.getElementById('newAdminPassword').value = '';
+      alert('Senha administrativa atualizada com sucesso!');
